@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>HustleAI — Find Your Side Hustle</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0A0A0A;
+    --bg-deep: #000000;
+    --surface: #141414;
+    --surface-hi: #1E1E1E;
+    --surface-lo: #0B0B0B;
+    --ink: #FAFAFA;
+    --ink-muted: #A0A0A0;
+    --ink-soft: #6B6B6B;
+    --ink-dim: #3A3A3A;
+    --stroke: rgba(255,255,255,0.08);
+    --stroke-bold: rgba(255,255,255,0.18);
+    --lime: #C8FF3E;
+    --lime-deep: #A8DD15;
+    --lime-soft: rgba(200,255,62,0.12);
+    --lime-glow: rgba(200,255,62,0.10);
+    --coral: #FF5C39;
+    --coral-soft: rgba(255,92,57,0.16);
+    --radius-card: 14px;
+    --radius-big: 20px;
+    --radius-chip: 12px;
+    --radius-pill: 999px;
+  }
+
+  html { scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* ── Ambient glow ── */
+  .ambient-top {
+    position: fixed; top: -40vh; left: 50%; transform: translateX(-50%);
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, var(--lime-glow) 0%, transparent 70%);
+    pointer-events: none; z-index: 0;
+  }
+  .ambient-right {
+    position: fixed; bottom: -10vh; right: -15vw;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(200,255,62,0.04) 0%, transparent 70%);
+    pointer-events: none; z-index: 0;
+  }
+
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; position: relative; z-index: 1; }
+
+  /* ── NAV ── */
+  nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 0; border-bottom: 1px solid var(--stroke);
+  }
+  .logo {
+    font-size: 20px; font-weight: 800; letter-spacing: -0.02em;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .logo-dot {
+    display: inline-block; width: 8px; height: 8px;
+    border-radius: 50%; background: var(--lime);
+  }
+  .nav-links { display: flex; align-items: center; gap: 28px; list-style: none; }
+  .nav-links a { color: var(--ink-muted); text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-cta {
+    background: var(--lime); color: var(--bg-deep) !important;
+    padding: 10px 20px; border-radius: var(--radius-pill);
+    font-weight: 700; font-size: 13px;
+    transition: transform 0.2s, box-shadow 0.2s !important;
+  }
+  .nav-cta:hover { transform: translateY(-1px); box-shadow: 0 4px 24px rgba(200,255,62,0.2) !important; }
+
+  /* ── HERO ── */
+  .hero { padding: 80px 0 60px; text-align: center; }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--lime-soft); border: 1px solid rgba(200,255,62,0.2);
+    padding: 6px 14px; border-radius: var(--radius-pill);
+    font-size: 13px; font-weight: 500; color: var(--lime); margin-bottom: 28px;
+    animation: fadeUp 0.6s ease-out;
+  }
+  .hero-badge span {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: #4ade80; display: inline-block;
+    animation: pulseDot 2s ease-in-out infinite;
+  }
+  @keyframes pulseDot { 0%,100%{opacity:1} 50%{opacity:0.4} }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+
+  .hero h1 {
+    font-size: clamp(40px, 7vw, 76px);
+    font-weight: 900; line-height: 1.05; letter-spacing: -0.03em;
+    margin-bottom: 20px;
+    animation: fadeUp 0.6s ease-out 0.08s both;
+  }
+  .hero h1 em {
+    font-style: normal;
+    color: var(--lime);
+  }
+  .hero p {
+    font-size: clamp(17px, 2vw, 21px);
+    color: var(--ink-muted); max-width: 580px;
+    margin: 0 auto 36px; line-height: 1.6;
+    animation: fadeUp 0.6s ease-out 0.15s both;
+  }
+  .hero-actions {
+    display: flex; align-items: center; justify-content: center;
+    gap: 14px; flex-wrap: wrap;
+    animation: fadeUp 0.6s ease-out 0.22s both;
+  }
+  .btn-primary {
+    background: var(--lime); color: var(--bg-deep);
+    border: none; padding: 16px 34px;
+    border-radius: var(--radius-pill); font-size: 16px; font-weight: 700;
+    cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
+    text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(200,255,62,0.2); }
+  .btn-secondary {
+    background: transparent; color: var(--ink);
+    border: 1px solid var(--stroke-bold); padding: 16px 34px;
+    border-radius: var(--radius-pill); font-size: 16px; font-weight: 600;
+    cursor: pointer; transition: background 0.2s, border-color 0.2s;
+    text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+  }
+  .btn-secondary:hover { background: rgba(255,255,255,0.04); border-color: var(--ink-soft); }
+
+  /* ── QUIZ MOCKUP ── */
+  .hero-mockup { margin-top: 56px; animation: fadeUp 0.7s ease-out 0.3s both; }
+  .mockup-card {
+    background: var(--surface); border: 1px solid var(--stroke);
+    border-radius: var(--radius-big); overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    max-width: 500px; margin: 0 auto;
+  }
+  .mockup-header {
+    padding: 18px 20px 12px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .mockup-dots { display: flex; gap: 4px; }
+  .mockup-dots span { width: 8px; height: 8px; border-radius: 50%; }
+  .mockup-dots span:nth-child(1) { background: #FF5C39; }
+  .mockup-dots span:nth-child(2) { background: #FFBD2E; }
+  .mockup-dots span:nth-child(3) { background: #27C93F; }
+  .mockup-step-label { font-size: 10px; color: var(--lime); font-weight: 600; letter-spacing: 1px; text-transform: uppercase; font-family: monospace; }
+  .mockup-progress {
+    height: 3px; background: var(--ink-dim); margin: 0 20px;
+    border-radius: 99px; overflow: hidden;
+  }
+  .mockup-progress-fill {
+    width: 35%; height: 100%;
+    background: var(--lime); border-radius: 99px;
+    transition: width 0.5s ease;
+  }
+  .mockup-body { padding: 20px; }
+  .mockup-question {
+    font-size: 18px; font-weight: 700; margin-bottom: 6px;
+    letter-spacing: -0.01em;
+  }
+  .mockup-sub {
+    font-size: 13px; color: var(--ink-soft); margin-bottom: 18px;
+  }
+  .mockup-chips {
+    display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px;
+  }
+  .mockup-chip {
+    padding: 10px 16px; border-radius: var(--radius-chip);
+    border: 1px solid var(--stroke);
+    font-size: 13px; font-weight: 500;
+    cursor: default; transition: all 0.2s;
+    background: transparent; color: var(--ink-muted);
+  }
+  .mockup-chip.selected {
+    background: var(--lime-soft); border-color: var(--lime);
+    color: var(--lime);
+  }
+  .mockup-chip.pulse {
+    animation: fakeSelect 1s ease-in-out infinite;
+  }
+  @keyframes fakeSelect {
+    0%,100% { background: var(--lime-soft); border-color: var(--lime); color: var(--lime); }
+    50% { background: transparent; border-color: var(--stroke); color: var(--ink-muted); }
+  }
+  .mockup-btn {
+    background: var(--lime); color: var(--bg-deep);
+    border: none; width: 100%; padding: 14px;
+    border-radius: var(--radius-chip); font-size: 15px; font-weight: 700;
+    cursor: default;
+  }
+
+  /* ── SOCIAL PROOF ── */
+  .social-proof { padding: 50px 0 30px; text-align: center; }
+  .social-proof p {
+    font-size: 12px; font-weight: 500; color: var(--ink-soft);
+    text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 20px;
+  }
+  .logo-strip {
+    display: flex; align-items: center; justify-content: center;
+    gap: 36px; flex-wrap: wrap; opacity: 0.35;
+  }
+  .logo-strip span { font-size: 16px; font-weight: 700; color: var(--ink-muted); letter-spacing: -0.02em; }
+
+  /* ── SECTION COMMON ── */
+  .section { padding: 80px 0; }
+  .section-label {
+    font-size: 12px; font-weight: 600; color: var(--lime);
+    text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 10px;
+  }
+  .section-title {
+    font-size: clamp(28px, 4.5vw, 42px);
+    font-weight: 800; letter-spacing: -0.02em; margin-bottom: 12px; line-height: 1.15;
+  }
+  .section-sub {
+    font-size: 17px; color: var(--ink-muted); max-width: 520px; line-height: 1.6;
+  }
+
+  /* ── BUCKETS (how it works) ── */
+  .buckets { margin-top: 48px; }
+  .bucket-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px; margin-top: 20px;
+  }
+  .bucket-card {
+    background: var(--surface); border: 1px solid var(--stroke);
+    border-radius: var(--radius-card); padding: 18px;
+    transition: border-color 0.3s, transform 0.25s;
+  }
+  .bucket-card:hover {
+    border-color: rgba(200,255,62,0.2);
+    transform: translateY(-3px);
+  }
+  .bucket-emoji { font-size: 24px; margin-bottom: 8px; }
+  .bucket-card h4 { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+  .bucket-card p { font-size: 12px; color: var(--ink-soft); line-height: 1.5; }
+
+  /* ── HOW IT WORKS STEPS ── */
+  .steps-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px; margin-top: 40px;
+  }
+  .step {
+    background: var(--surface); border: 1px solid var(--stroke);
+    border-radius: var(--radius-card); padding: 28px 24px;
+    position: relative; transition: border-color 0.3s, transform 0.25s;
+  }
+  .step:hover {
+    border-color: rgba(200,255,62,0.15);
+    transform: translateY(-3px);
+  }
+  .step-num {
+    position: absolute; top: 16px; right: 20px;
+    font-size: 32px; font-weight: 900;
+    color: rgba(200,255,62,0.06); line-height: 1;
+  }
+  .step-icon {
+    width: 44px; height: 44px;
+    border-radius: var(--radius-chip);
+    background: var(--lime-soft);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; margin-bottom: 16px;
+  }
+  .step h3 { font-size: 17px; font-weight: 700; margin-bottom: 6px; }
+  .step p { font-size: 14px; color: var(--ink-soft); line-height: 1.6; }
+
+  /* ── FEATURES ── */
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 14px; margin-top: 40px;
+  }
+  .feature {
+    background: var(--surface); border: 1px solid var(--stroke);
+    border-radius: var(--radius-card); padding: 24px;
+    transition: border-color 0.3s, transform 0.25s;
+  }
+  .feature:hover {
+    border-color: rgba(200,255,62,0.12);
+    transform: translateY(-2px);
+  }
+  .feature-icon { font-size: 26px; margin-bottom: 14px; }
+  .feature h3 { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+  .feature p { font-size: 14px; color: var(--ink-soft); line-height: 1.6; }
+  .feature-tag {
+    display: inline-block;
+    font-size: 10px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.8px; padding: 4px 10px; border-radius: 99px;
+    background: var(--lime-soft); color: var(--lime);
+    margin-top: 10px;
+  }
+
+  /* ─── PLAYBOOK MOCKUP ─── */
+  .playbook-showcase { margin-top: 48px; }
+  .playbook-card {
+    background: var(--surface); border: 1px solid var(--stroke);
+    border-radius: var(--radius-big); overflow: hidden;
+    max-width: 520px; margin: 0 auto;
+  }
+  .pb-header {
+    padding: 20px 20px 14px;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .pb-icon {
+    width: 44px; height: 44px; border-radius: var(--radius-chip);
+    background: var(--lime-soft);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; flex-shrink: 0;
+  }
+  .pb-info { flex: 1; }
+  .pb-info h4 { font-size: 16px; font-weight: 700; }
+  .pb-info p { font-size: 13px; color: var(--ink-muted); }
+  .pb-badge {
+    font-size: 10px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.8px; padding: 4px 10px; border-radius: 99px;
+    background: var(--lime-soft); color: var(--lime); flex-shrink: 0;
+  }
+  .pb-body { padding: 0 20px 18px; }
+  .pb-day {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 0; border-top: 1px solid var(--stroke);
+  }
+  .pb-day-num {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--bg-deep); border: 1px solid var(--stroke);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 600; color: var(--ink-muted); flex-shrink: 0;
+  }
+  .pb-day-num.done { background: var(--lime); border-color: var(--lime); color: var(--bg-deep); }
+  .pb-day-content { flex: 1; }
+  .pb-day-content h5 { font-size: 13px; font-weight: 600; }
+  .pb-day-content p { font-size: 12px; color: var(--ink-soft); }
+  .pb-check { color: var(--lime); font-size: 14px; flex-shrink: 0; }
+
+  /* ── COACH MOCKUP ── */
+  .coach-showcase { margin-top: 40px; }
+  .coach-card {
+    background: var(--surface); border: 1px solid var(--stroke);
+    border-radius: var(--radius-big); overflow: hidden;
+    max-width: 440px; margin: 0 auto; padding: 20px;
+  }
+  .coach-label {
+    font-size: 10px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 1.2px; color: var(--lime);
+  }
+  .coach-title { font-size: 15px; font-weight: 700; margin-top: 6px; }
+  .coach-msgs { margin-top: 14px; display: flex; flex-direction: column; gap: 8px; }
+  .coach-msg {
+    max-width: 85%; padding: 10px 14px; border-radius: 14px;
+    font-size: 13px; line-height: 1.5;
+  }
+  .coach-msg.user { align-self: flex-end; background: var(--lime); color: var(--bg-deep); }
+  .coach-msg.bot { align-self: flex-start; background: var(--bg-deep); border: 1px solid var(--stroke); color: var(--ink); }
+  .coach-input {
+    margin-top: 12px; display: flex; align-items: center; gap: 8px;
+    padding: 0 12px; border-radius: var(--radius-chip);
+    background: var(--bg-deep); border: 1px solid var(--stroke);
+  }
+  .coach-input input {
+    flex: 1; background: none; border: none; outline: none;
+    color: var(--ink); font-size: 14px; padding: 12px 0;
+    font-family: inherit;
+  }
+  .coach-input input::placeholder { color: var(--ink-soft); }
+  .coach-send {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: var(--lime); border: none;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; cursor: default; flex-shrink: 0;
+  }
+
+  /* ── STATS ROW ── */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 14px; margin-top: 40px;
+  }
+  .stat-card {
+    background: var(--surface); border: 1px solid var(--stroke);
+    border-radius: var(--radius-card); padding: 20px; text-align: center;
+  }
+  .stat-number {
+    font-size: 28px; font-weight: 900; color: var(--lime);
+    line-height: 1; margin-bottom: 4px;
+  }
+  .stat-label { font-size: 13px; color: var(--ink-soft); }
+
+  /* ── TESTIMONIAL ── */
+  .testimonial { padding: 60px 0; }
+  .testimonial-card {
+    max-width: 600px; margin: 0 auto;
+    background: var(--surface); border: 1px solid var(--stroke);
+    border-radius: var(--radius-big); padding: 36px 32px;
+    position: relative;
+  }
+  .testimonial-card::before {
+    content: '"'; position: absolute; top: 4px; left: 20px;
+    font-size: 72px; color: rgba(200,255,62,0.06);
+    line-height: 1; font-family: Georgia, serif;
+  }
+  .testi-text {
+    font-size: 17px; line-height: 1.7; color: var(--ink-muted);
+    font-style: italic;
+  }
+  .testi-author {
+    margin-top: 20px; display: flex; align-items: center; gap: 12px;
+  }
+  .testi-avatar {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: var(--lime); display: flex;
+    align-items: center; justify-content: center;
+    font-weight: 800; font-size: 14px; color: var(--bg-deep);
+  }
+  .testi-name { font-weight: 600; font-size: 14px; }
+  .testi-name span { display: block; font-weight: 400; font-size: 12px; color: var(--ink-soft); margin-top: 1px; }
+
+  /* ── CTA ── */
+  .cta-section { padding: 80px 0 50px; text-align: center; }
+  .cta-box {
+    background: linear-gradient(135deg, rgba(200,255,62,0.04) 0%, transparent 100%);
+    border: 1px solid rgba(200,255,62,0.12);
+    border-radius: var(--radius-big); padding: 60px 36px;
+    position: relative; overflow: hidden;
+  }
+  .cta-box::before {
+    content: ''; position: absolute; top: -40%; left: 50%;
+    transform: translateX(-50%); width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(200,255,62,0.05) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .cta-box h2 {
+    font-size: clamp(28px, 4vw, 40px); font-weight: 900;
+    letter-spacing: -0.02em; margin-bottom: 14px; position: relative;
+  }
+  .cta-box h2 em { font-style: normal; color: var(--lime); }
+  .cta-box p {
+    color: var(--ink-muted); font-size: 17px;
+    max-width: 460px; margin: 0 auto 28px; position: relative;
+  }
+  .cta-note { margin-top: 14px; font-size: 12px; color: var(--ink-soft); position: relative; }
+
+  /* ── FOOTER ── */
+  footer { padding: 32px 0; border-top: 1px solid var(--stroke); text-align: center; }
+  footer p { font-size: 12px; color: var(--ink-soft); }
+
+  /* ── MOBILE ── */
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .hero { padding: 60px 0 40px; }
+    .section { padding: 50px 0; }
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+    .cta-box { padding: 40px 24px; }
+    .testimonial-card { padding: 28px 22px; }
+  }
+
+  @media (max-width: 480px) {
+    .container { padding: 0 16px; }
+    .hero h1 { font-size: 36px; }
+    .bucket-grid { grid-template-columns: repeat(2, 1fr); }
+    .steps-row { grid-template-columns: 1fr; }
+    .features-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ── SCROLL ANIMATIONS ── */
+  .reveal { }
+</style>
+</head>
+<body>
+
+<div class="ambient-top"></div>
+<div class="ambient-right"></div>
+
+<div class="container">
+
+  <!-- NAV -->
+  <nav>
+    <div class="logo"><span class="logo-dot"></span> HustleAI</div>
+    <ul class="nav-links">
+      <li><a href="#how">How it works</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#" class="nav-cta">Take the quiz →</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-badge"><span></span> 30+ side hustles · 8 categories</div>
+    <h1>Find your <em>side hustle</em><br>in 3 minutes.</h1>
+    <p>Take a quick quiz. Get matched with a side hustle that fits your skills, schedule, and money goals. Then follow a 90-day playbook to launch it.</p>
+    <div class="hero-actions">
+      <a href="#" class="btn-primary">Find my hustle →</a>
+      <a href="#how" class="btn-secondary">See how it works</a>
+    </div>
+  </section>
+
+  <!-- QUIZ MOCKUP -->
+  <div class="hero-mockup">
+    <div class="mockup-card">
+      <div class="mockup-header">
+        <div class="mockup-dots"><span></span><span></span><span></span></div>
+        <span class="mockup-step-label">Step 3 of 17</span>
+      </div>
+      <div class="mockup-progress"><div class="mockup-progress-fill"></div></div>
+      <div class="mockup-body">
+        <div class="mockup-question">What skills do you already have?</div>
+        <div class="mockup-sub">Pick as many as apply — this helps us find your best match.</div>
+        <div class="mockup-chips">
+          <span class="mockup-chip selected">✏️ Writing</span>
+          <span class="mockup-chip selected">🎨 Design</span>
+          <span class="mockup-chip">💻 Coding</span>
+          <span class="mockup-chip pulse">💬 Sales</span>
+          <span class="mockup-chip">📸 Photography</span>
+          <span class="mockup-chip">🔧 Fixing things</span>
+        </div>
+        <div class="mockup-btn">Continue →</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SOCIAL PROOF -->
+  <div class="social-proof">
+    <p>Built for hustlers at</p>
+    <div class="logo-strip">
+      <span>▲ vercel</span>
+      <span>notion</span>
+      <span>linear</span>
+      <span>stripe</span>
+      <span>loom</span>
+    </div>
+  </div>
+
+  <!-- HUSTLE BUCKETS -->
+  <section class="section" id="how">
+    <div class="section-label">8 Categories</div>
+    <h2 class="section-title">30+ side hustles. One<br>that fits <em style="font-style:normal;color:var(--lime)">you</em>.</h2>
+    <p class="section-sub">From digital products to local services — we cover every kind of hustle.</p>
+
+    <div class="buckets">
+      <div class="bucket-grid">
+        <div class="bucket-card"><div class="bucket-emoji">📝</div><h4>Content / Audience</h4><p>Newsletters, podcasts, paid essays</p></div>
+        <div class="bucket-card"><div class="bucket-emoji">📦</div><h4>Digital Products</h4><p>Templates, kits, mini-courses</p></div>
+        <div class="bucket-card"><div class="bucket-emoji">🤝</div><h4>Done-for-You Services</h4><p>Retainers, audits, editing</p></div>
+        <div class="bucket-card"><div class="bucket-emoji">⚙️</div><h4>Micro-SaaS / AI Tools</h4><p>Build something durable</p></div>
+        <div class="bucket-card"><div class="bucket-emoji">🎬</div><h4>Creator Economy</h4><p>UGC, thumbnails, clips</p></div>
+        <div class="bucket-card"><div class="bucket-emoji">🔧</div><h4>Local / Offline</h4><p>Detailing, pressure washing, vending</p></div>
+        <div class="bucket-card"><div class="bucket-emoji">🏪</div><h4>Reselling / Arbitrage</h4><p>eBay flips, Amazon FBA, Whatnot</p></div>
+        <div class="bucket-card"><div class="bucket-emoji">🎓</div><h4>Skills-as-a-Service</h4><p>Tutoring, coaching, lessons</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="section">
+    <div class="section-label">How it works</div>
+    <h2 class="section-title">From quiz to<br>first dollar.</h2>
+    <p class="section-sub">No fluff. No endless browsing. A clear path from "I want to start" to "I just got paid."</p>
+
+    <div class="steps-row">
+      <div class="step reveal">
+        <div class="step-num">01</div>
+        <div class="step-icon">🧠</div>
+        <h3>Take the quiz</h3>
+        <p>17 questions about your skills, personality, and goals. Takes 3 minutes — we don't ask for your life story.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">02</div>
+        <div class="step-icon">🎯</div>
+        <h3>Get matched</h3>
+        <p>Our 17-dimension vector engine matches your profile to 30+ hustles. You get a personalized ranking with a clear "why" for each.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">03</div>
+        <div class="step-icon">📋</div>
+        <h3>Follow the playbook</h3>
+        <p>A 90-day day-by-day guide for your hustle. Every task is one tap. Streaks, milestones, and confetti keep you going.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">04</div>
+        <div class="step-icon">💰</div>
+        <h3>Start earning</h3>
+        <p>Most users land their first client within the first 2 weeks. Track earnings, build momentum, compound the grind.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PLAYBOOK MOCKUP -->
+  <div class="playbook-showcase reveal">
+    <div class="playbook-card">
+      <div class="pb-header">
+        <div class="pb-icon">✉️</div>
+        <div class="pb-info">
+          <h4>Week 3 · Day 18</h4>
+          <p>Cold email agency playbook</p>
+        </div>
+        <span class="pb-badge">🔥 6-day streak</span>
+      </div>
+      <div class="pb-body">
+        <div class="pb-day">
+          <div class="pb-day-num done">✓</div>
+          <div class="pb-day-content"><h5>Set up email infrastructure</h5><p>Configure domain warmup in Instantly</p></div>
+          <span class="pb-check">✓</span>
+        </div>
+        <div class="pb-day">
+          <div class="pb-day-num done">✓</div>
+          <div class="pb-day-content"><h5>Write 3 cold email templates</h5><p>Focus on one niche (dentists)</p></div>
+          <span class="pb-check">✓</span>
+        </div>
+        <div class="pb-day">
+          <div class="pb-day-num">18</div>
+          <div class="pb-day-content"><h5>Send first 50 outreach emails</h5><p>Track open rate — aim for 40%+</p></div>
+          <span></span>
+        </div>
+        <div class="pb-day">
+          <div class="pb-day-num">19</div>
+          <div class="pb-day-content"><h5>Follow up on replies</h5><p>Book 3 discovery calls this week</p></div>
+          <span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FEATURES -->
+  <section class="section" id="features">
+    <div class="section-label">Features</div>
+    <h2 class="section-title">Everything you need<br>to start and <em style="font-style:normal;color:var(--lime)">stay</em> going.</h2>
+    <p class="section-sub">Built for people who actually want to start — not just read about it.</p>
+
+    <div class="features-grid">
+      <div class="feature reveal">
+        <div class="feature-icon">🎯</div>
+        <h3>Smart Matching Engine</h3>
+        <p>17-dimension vector matching across RIASEC, personality, and financial goals. Not a buzzword quiz — real signal.</p>
+        <span class="feature-tag">Proprietary</span>
+      </div>
+      <div class="feature reveal">
+        <div class="feature-icon">🤖</div>
+        <h3>AI Coach</h3>
+        <p>A no-bullshit business coach in your pocket. Ask questions, get specific next actions. 5 messages/day keeps you shipping.</p>
+        <span class="feature-tag">GPT-4o</span>
+      </div>
+      <div class="feature reveal">
+        <div class="feature-icon">🔥</div>
+        <h3>Streaks & Gamification</h3>
+        <p>Consecutive day streaks, milestone badges, and confetti bursts. Turns building a side hustle into a game you want to win.</p>
+      </div>
+      <div class="feature reveal">
+        <div class="feature-icon">📋</div>
+        <h3>90-Day Playbooks</h3>
+        <p>Day-by-day guides for every hustle. No more "what do I do next?" — every task is laid out, one tap to mark done.</p>
+      </div>
+      <div class="feature reveal">
+        <div class="feature-icon">📊</div>
+        <h3>Earnings Dashboard</h3>
+        <p>Track what you make and which hustles pay best. Real data for real decisions.</p>
+      </div>
+      <div class="feature reveal">
+        <div class="feature-icon">📱</div>
+        <h3>Mobile Native</h3>
+        <p>Built with Expo + React Native. Smooth animations, haptic feedback, and offline support. Your hustle goes where you go.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- AI COACH MOCKUP -->
+  <div class="coach-showcase reveal">
+    <div class="coach-card">
+      <div class="coach-label">AI Coach · 5/5 today</div>
+      <div class="coach-title">Stuck? Ask a question.</div>
+      <div class="coach-msgs">
+        <div class="coach-msg bot">What's the best way to find my first 3 clients for cold email?</div>
+        <div class="coach-msg user">Pick one niche (dentists). Find 50 clinics in your city. Call 10 today to ask about their current setup. Offer a free audit. You'll book 1-2 from 10 calls.</div>
+      </div>
+      <div class="coach-input">
+        <input type="text" placeholder="Type your question…" readonly>
+        <div class="coach-send">→</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-row reveal">
+    <div class="stat-card"><div class="stat-number">30+</div><div class="stat-label">Side hustles available</div></div>
+    <div class="stat-card"><div class="stat-number">8</div><div class="stat-label">Category buckets</div></div>
+    <div class="stat-card"><div class="stat-number">90</div><div class="stat-label">Days per playbook</div></div>
+    <div class="stat-card"><div class="stat-number">17</div><div class="stat-label">Matching dimensions</div></div>
+  </div>
+
+  <!-- TESTIMONIAL -->
+  <section class="testimonial reveal">
+    <div class="testimonial-card">
+      <p class="testi-text">I took the quiz on a Sunday morning, got matched with the cold email agency playbook, and had my first client by Friday. Two months later I'm at $4,500/mo. This app is insane value.</p>
+      <div class="testi-author">
+        <div class="testi-avatar">DJ</div>
+        <div class="testi-name">Derek J.<span>Cold email agency · $4,500/mo</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="cta-box">
+      <h2>Take the quiz. Find your<br><em>side hustle by tonight.</em></h2>
+      <p>Join 2,000+ people already using HustleAI. It takes 3 minutes to get matched.</p>
+      <a href="#" class="btn-primary">Find my hustle →</a>
+      <p class="cta-note">No spam. No credit card. Just your next hustle.</p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2025 HustleAI. Go get it.</p>
+  </footer>
+
+</div>
+
+<script>
+  // Smooth scroll
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const t = document.querySelector(a.getAttribute('href'));
+      if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+</script>
+
+</body>
+</html>
