@@ -1,698 +1,1022 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
-<title>HustleAI — Find your side hustle in 3 minutes</title>
-<meta name="description" content="30 hand-curated side hustles matched to your personality. 17-factor quiz, AI coach, 90-day playbooks. Build something real.">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0A0A0A">
+<title>HustleAI — Match. Plan. Launch.</title>
+<meta name="description" content="An AI side-hustle coach in your pocket. Take the 17-factor match, get a 90-day playbook, ship in 30.">
+
+<meta property="og:title" content="HustleAI — Match. Plan. Launch.">
+<meta property="og:description" content="AI side-hustle matching plus a 90-day playbook. Built for people who actually ship.">
+<meta property="og:type" content="website">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
 <style>
-:root {
-  --bg: #0A0A0A;
-  --bg-deep: #000000;
-  --surface: #141414;
-  --surface-hi: #1E1E1E;
-  --surface-lo: #0B0B0B;
-  --ink: #FAFAFA;
-  --ink-muted: #A0A0A0;
-  --ink-soft: #6B6B6B;
-  --ink-dim: #3A3A3A;
-  --stroke: rgba(255,255,255,0.08);
-  --stroke-bold: rgba(255,255,255,0.18);
-  --lime: #C8FF3E;
-  --lime-deep: #A8DD15;
-  --lime-soft: rgba(200,255,62,0.12);
-  --lime-text: #0A0A0A;
-  --coral: #FF5C39;
-  --coral-soft: rgba(255,92,57,0.16);
-  --radius-card: 14px;
-  --radius-big: 20px;
-  --radius-chip: 12px;
-  --radius-pill: 999px;
-  --font: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+:root{
+  --bg:#0A0A0A;
+  --bg-deep:#000;
+  --surface:#141414;
+  --surface-hi:#1E1E1E;
+  --surface-lo:#0B0B0B;
+  --ink:#FAFAFA;
+  --ink-muted:#A0A0A0;
+  --ink-soft:#6B6B6B;
+  --ink-dim:#3A3A3A;
+  --stroke:rgba(255,255,255,.08);
+  --stroke-bold:rgba(255,255,255,.18);
+  --stroke-lime:rgba(200,255,62,.35);
+  --lime:#C8FF3E;
+  --lime-deep:#A8DD15;
+  --lime-soft:rgba(200,255,62,.12);
+  --coral:#FF5C39;
+  --r-chip:12px;
+  --r-card:14px;
+  --r-big:20px;
+  --r-pill:999px;
+  --sans:'Geist','Inter',-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif;
+  --mono:'Geist Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
 }
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{font-size:16px;-webkit-text-size-adjust:100%}
+html{font-size:16px;-webkit-text-size-adjust:100%;scroll-behavior:smooth}
 body{
-  font-family:var(--font);
+  font-family:var(--sans);
   background:var(--bg);
   color:var(--ink);
-  line-height:1.6;
+  line-height:1.5;
   -webkit-font-smoothing:antialiased;
   -moz-osx-font-smoothing:grayscale;
   overflow-x:hidden;
+  font-feature-settings:"ss01","cv11";
 }
-
-img{max-width:100%;height:auto;display:block}
+img,svg{display:block;max-width:100%}
 a{color:inherit;text-decoration:none}
-button{cursor:pointer;font:inherit;border:none;background:none;color:inherit}
+button{cursor:pointer;font:inherit;border:0;background:none;color:inherit}
+::selection{background:var(--lime);color:#000}
 
-/* ── Typography ── */
-.h1,.h2,.h3,.h4{font-weight:600;line-height:1.15;letter-spacing:-0.02em}
-.h1{font-size:clamp(2rem,7.5vw,3.5rem)}
-.h2{font-size:clamp(1.5rem,5.5vw,2.25rem)}
-.h3{font-size:clamp(1.125rem,4vw,1.5rem)}
-.h4{font-size:1rem}
-.body{font-size:0.9375rem;line-height:1.65;color:var(--ink-muted)}
-.body-sm{font-size:0.8125rem;line-height:1.5;color:var(--ink-soft)}
+/* ─────── layout ─────── */
+.wrap{width:100%;max-width:1280px;margin:0 auto;padding:0 18px}
+@media(min-width:480px){.wrap{padding:0 22px}}
+@media(min-width:720px){.wrap{padding:0 32px}}
+@media(min-width:1024px){.wrap{padding:0 40px}}
 
-/* ── Layout ── */
-.container{width:100%;padding:0 1.25rem;margin:0 auto;max-width:1200px}
-.section{padding:4rem 0}
-@media(min-width:768px){.section{padding:6rem 0}.container{padding:0 2rem}}
+.rule{height:1px;background:var(--stroke);border:0;width:100%}
 
-/* ── Header ── */
-.header{
-  position:fixed;top:0;left:0;right:0;z-index:100;
-  background:rgba(10,10,10,0.85);
-  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+/* ─────── type ─────── */
+.mono{font-family:var(--mono);font-feature-settings:"ss02"}
+.eyebrow{
+  font-family:var(--mono);font-size:11px;font-weight:500;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--ink-muted);
+}
+.eyebrow .dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--lime);margin-right:8px;vertical-align:middle;transform:translateY(-1px)}
+
+h1.display{
+  font-family:var(--sans);font-weight:700;
+  font-size:clamp(38px,10.5vw,104px);
+  line-height:.98;letter-spacing:-.04em;
+}
+@media(min-width:720px){h1.display{line-height:.96;letter-spacing:-.045em}}
+h2.display{
+  font-family:var(--sans);font-weight:700;
+  font-size:clamp(28px,7.2vw,64px);
+  line-height:1.05;letter-spacing:-.03em;
+}
+@media(min-width:720px){h2.display{line-height:1.0;letter-spacing:-.035em}}
+h3.section{
+  font-family:var(--sans);font-weight:600;
+  font-size:clamp(20px,4.4vw,32px);
+  line-height:1.2;letter-spacing:-.02em;
+}
+.lede{
+  font-size:clamp(15px,2vw,19px);line-height:1.55;color:var(--ink-muted);
+  max-width:54ch;
+}
+.kicker{color:var(--lime)}
+
+/* ─────── header ─────── */
+.hdr{
+  position:sticky;top:0;z-index:60;
+  background:rgba(10,10,10,.78);
+  backdrop-filter:blur(14px) saturate(140%);
+  -webkit-backdrop-filter:blur(14px) saturate(140%);
   border-bottom:1px solid var(--stroke);
 }
-.header-inner{
-  display:flex;align-items:center;justify-content:space-between;
-  height:3.5rem;padding:0 1.25rem;max-width:1200px;margin:0 auto;
+.hdr-row{display:flex;align-items:center;justify-content:space-between;height:58px;gap:12px}
+@media(min-width:720px){.hdr-row{height:60px}}
+.brand{display:inline-flex;align-items:center;gap:10px;font-weight:700;letter-spacing:-.02em;font-size:16px}
+@media(min-width:720px){.brand{font-size:17px}}
+.brand-mark{
+  width:26px;height:26px;border-radius:7px;background:var(--lime);
+  display:inline-grid;place-items:center;color:#000;
+  font-family:var(--mono);font-weight:700;font-size:13px;
 }
-@media(min-width:768px){.header-inner{padding:0 2rem;height:4rem}}
+.brand-mark::after{content:"H"}
+.nav-cta{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:10px 14px;border-radius:var(--r-pill);
+  background:var(--lime);color:#000;
+  font-weight:600;font-size:13px;letter-spacing:-.01em;
+  transition:transform .15s ease;
+  white-space:nowrap;
+}
+@media(min-width:720px){.nav-cta{padding:8px 14px;font-size:13.5px}}
+.nav-cta:hover{transform:translateY(-1px)}
 
-.logo{font-weight:700;font-size:1.125rem;letter-spacing:-0.03em;display:flex;align-items:center;gap:0.5rem}
-.logo-mark{
-  display:inline-flex;align-items:center;justify-content:center;
-  width:1.5rem;height:1.5rem;border-radius:6px;background:var(--lime);
-  color:var(--lime-text);font-size:0.75rem;font-weight:800;
+/* ─────── hero ─────── */
+.hero{padding:28px 0 24px;position:relative}
+@media(min-width:720px){.hero{padding:64px 0 40px}}
+.hero-meta{
+  display:flex;justify-content:space-between;align-items:center;gap:12px;
+  padding-bottom:16px;border-bottom:1px solid var(--stroke);margin-bottom:26px;
+  font-family:var(--mono);font-size:10px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.1em;
 }
-.header-cta{
-  display:inline-flex;align-items:center;gap:0.375rem;
-  padding:0.5rem 1.125rem;border-radius:var(--radius-pill);
-  background:var(--lime);color:var(--lime-text);
-  font-size:0.8125rem;font-weight:600;transition:opacity 0.2s;
+@media(min-width:480px){.hero-meta{font-size:11px;letter-spacing:.12em;margin-bottom:32px;padding-bottom:18px}}
+.hero-meta span{min-width:0}
+.hero-meta span:first-child{color:var(--ink-muted)}
+.hero-meta span:last-child{text-align:right}
+.hero h1 .nb{white-space:nowrap}
+.hero h1 .ink-soft{color:var(--ink-soft)}
+.hero h1 .underlime{
+  position:relative;display:inline-block;
 }
-.header-cta:active{opacity:0.85}
-
-/* ── Hero ── */
-.hero{
-  min-height:100dvh;display:flex;flex-direction:column;justify-content:center;
-  padding:5rem 0 3rem;position:relative;overflow:hidden;
+.hero h1 .underlime::after{
+  content:"";position:absolute;left:0;right:0;bottom:.08em;height:.18em;
+  background:var(--lime);z-index:-1;border-radius:2px;
 }
-.hero-glow{
-  position:absolute;top:-30%;right:-20%;
-  width:60vmax;height:60vmax;
-  background:radial-gradient(circle at 30% 50%,var(--lime-soft) 0%,transparent 70%);
-  pointer-events:none;
+.hero-lede{margin-top:20px;max-width:48ch}
+@media(min-width:720px){.hero-lede{margin-top:24px}}
+.hero-cta{
+  margin-top:24px;display:flex;flex-direction:column;gap:10px;
 }
-.hero-content{position:relative;z-index:1}
-.hero-badge{
-  display:inline-flex;align-items:center;gap:0.375rem;
-  padding:0.375rem 0.75rem;border-radius:var(--radius-pill);
-  background:var(--lime-soft);border:1px solid var(--stroke-lime,var(--stroke));
-  font-size:0.75rem;font-weight:500;color:var(--lime);margin-bottom:1.5rem;
-}
-.hero h1{margin-bottom:1rem}
-.hero .h1-highlight{
-  background:linear-gradient(135deg,var(--lime),#D4FF66);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  background-clip:text;
-}
-.hero p.body{max-width:32rem;margin-bottom:2rem;font-size:clamp(0.9375rem,3vw,1.125rem)}
-.hero-actions{display:flex;flex-direction:column;gap:0.75rem}
-@media(min-width:480px){.hero-actions{flex-direction:row;align-items:center}}
-
+@media(min-width:480px){.hero-cta{flex-direction:row;align-items:center;margin-top:28px}}
 .btn-primary{
-  display:inline-flex;align-items:center;justify-content:center;gap:0.5rem;
-  padding:0.875rem 1.75rem;border-radius:var(--radius-pill);
-  background:var(--lime);color:var(--lime-text);
-  font-size:1rem;font-weight:600;transition:transform 0.2s,box-shadow 0.2s;
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  padding:16px 22px;border-radius:var(--r-pill);
+  background:var(--lime);color:#000;
+  font-weight:700;font-size:15px;letter-spacing:-.01em;
+  transition:transform .15s ease, box-shadow .2s ease;
   box-shadow:0 0 0 0 rgba(200,255,62,0);
+  width:100%;
 }
-.btn-primary:active{transform:scale(0.97)}
-.btn-secondary{
-  display:inline-flex;align-items:center;justify-content:center;gap:0.5rem;
-  padding:0.875rem 1.75rem;border-radius:var(--radius-pill);
-  border:1px solid var(--stroke-bold);color:var(--ink);
-  font-size:1rem;font-weight:500;transition:background 0.2s;
+@media(min-width:480px){.btn-primary{width:auto;padding:15px 22px}}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 14px 32px -10px rgba(200,255,62,.45)}
+.btn-primary .arrow{transition:transform .2s ease}
+.btn-primary:hover .arrow{transform:translateX(4px)}
+.btn-ghost{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:14px 18px;color:var(--ink);font-weight:500;font-size:14px;
+  border:1px solid var(--stroke-bold);border-radius:var(--r-pill);
+  transition:border-color .15s ease,background .15s ease;
+  width:100%;
 }
-.btn-secondary:active{background:var(--surface-hi)}
+@media(min-width:480px){.btn-ghost{width:auto}}
+.btn-ghost:hover{border-color:var(--ink-muted);background:rgba(255,255,255,.03)}
+.cta-meta{
+  display:flex;gap:14px 18px;flex-wrap:wrap;margin-top:18px;
+  font-family:var(--mono);font-size:11px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.08em;
+}
+@media(min-width:480px){.cta-meta{font-size:11.5px;letter-spacing:.1em}}
+.cta-meta b{color:var(--ink-muted);font-weight:500}
 
-/* ── Quiz Preview Card ── */
-.quiz-card{
-  margin-top:2.5rem;
-  background:var(--surface);border:1px solid var(--stroke);
-  border-radius:var(--radius-big);padding:1.5rem;
+/* ─────── hero phone mock ─────── */
+.hero-stage{
+  margin-top:36px;position:relative;
+  display:grid;gap:24px;
+  grid-template-columns:1fr;
+}
+@media(min-width:720px){.hero-stage{margin-top:44px}}
+@media(min-width:980px){
+  .hero{padding-bottom:80px}
+  .hero-stage{grid-template-columns:1.05fr 1fr;align-items:center;gap:60px}
+  .hero-block{padding-right:8px}
+}
+.phone{
+  position:relative;width:100%;max-width:280px;margin:0 auto;
+  aspect-ratio:9/19.5;
+  background:var(--bg-deep);
+  border:1px solid var(--stroke-bold);
+  border-radius:34px;
+  padding:12px;
+  box-shadow:
+    0 30px 80px -20px rgba(0,0,0,.7),
+    inset 0 0 0 1px rgba(255,255,255,.04);
+}
+@media(min-width:480px){.phone{max-width:320px;border-radius:36px;padding:14px}}
+@media(min-width:720px){.phone{max-width:340px;border-radius:38px}}
+.phone-screen{
+  width:100%;height:100%;background:var(--bg);
+  border-radius:26px;overflow:hidden;
+  display:flex;flex-direction:column;
+  border:1px solid var(--stroke);
+}
+.phone-notch{
+  position:absolute;top:14px;left:50%;transform:translateX(-50%);
+  width:90px;height:24px;background:#000;border-radius:0 0 14px 14px;z-index:2;
+}
+.phone-status{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:10px 18px 6px;font-family:var(--mono);font-size:10.5px;color:var(--ink-muted);
+}
+.phone-status .dots{display:inline-flex;gap:3px}
+.phone-status .dots i{width:3px;height:3px;border-radius:50%;background:var(--ink-muted);display:block}
+
+.q-progress{padding:4px 18px 12px;display:flex;gap:5px}
+.q-progress i{flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,.08)}
+.q-progress i.done{background:var(--lime)}
+.q-progress i.now{background:var(--ink-muted)}
+
+.q-body{padding:6px 18px;flex:1;display:flex;flex-direction:column}
+.q-count{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;color:var(--ink-soft);text-transform:uppercase;
+  margin-bottom:10px;
+}
+.q-title{font-size:17px;line-height:1.25;font-weight:600;letter-spacing:-.01em;margin-bottom:18px}
+.q-opt{
+  padding:13px 14px;border:1px solid var(--stroke);border-radius:12px;
+  background:rgba(255,255,255,.02);margin-bottom:8px;
+  display:flex;align-items:center;gap:10px;
+  font-size:13px;
+}
+.q-opt .radio{width:14px;height:14px;border-radius:50%;border:1.5px solid var(--ink-dim);flex-shrink:0;position:relative}
+.q-opt.sel{border-color:var(--lime);background:rgba(200,255,62,.06)}
+.q-opt.sel .radio{border-color:var(--lime)}
+.q-opt.sel .radio::after{content:"";position:absolute;inset:2.5px;border-radius:50%;background:var(--lime)}
+.q-foot{padding:14px 18px 18px;display:flex;justify-content:space-between;align-items:center}
+.q-skip{font-family:var(--mono);font-size:11px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.1em}
+.q-next{
+  padding:10px 16px;border-radius:999px;background:var(--lime);color:#000;
+  font-weight:700;font-size:12.5px;display:inline-flex;align-items:center;gap:6px;
+}
+.phone-home{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:110px;height:4px;background:rgba(255,255,255,.4);border-radius:3px}
+
+/* ─────── hustle ticker ─────── */
+.ticker{
+  position:relative;border-top:1px solid var(--stroke);border-bottom:1px solid var(--stroke);
+  padding:16px 0;overflow:hidden;background:var(--surface-lo);
+  margin-top:20px;
+}
+@media(min-width:720px){.ticker{padding:18px 0;margin-top:24px}}
+.ticker-label{
+  position:absolute;top:50%;left:14px;transform:translateY(-50%);z-index:3;
+  background:var(--bg);padding:5px 8px;border:1px solid var(--stroke);border-radius:8px;
+  font-family:var(--mono);font-size:9.5px;color:var(--ink-muted);text-transform:uppercase;letter-spacing:.1em;
+}
+@media(min-width:480px){.ticker-label{left:20px;padding:6px 10px;font-size:10.5px;letter-spacing:.12em}}
+.ticker-fade-l,.ticker-fade-r{position:absolute;top:0;bottom:0;width:80px;z-index:2;pointer-events:none}
+.ticker-fade-l{left:0;background:linear-gradient(90deg,var(--surface-lo),transparent)}
+.ticker-fade-r{right:0;background:linear-gradient(270deg,var(--surface-lo),transparent)}
+.ticker-track{display:flex;gap:14px;animation:tick 80s linear infinite;width:max-content}
+.ticker:hover .ticker-track{animation-play-state:paused}
+.ticker-item{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--mono);font-size:13px;color:var(--ink-muted);
+  white-space:nowrap;
+}
+.ticker-item .dash{color:var(--ink-dim)}
+.ticker-item .num{color:var(--ink-soft);font-size:11px}
+@keyframes tick{
+  from{transform:translateX(0)}
+  to{transform:translateX(-50%)}
+}
+
+/* ─────── section frame ─────── */
+.section{padding:56px 0;position:relative}
+@media(min-width:720px){.section{padding:120px 0}}
+.section-head{margin-bottom:32px;display:grid;gap:14px}
+@media(min-width:720px){.section-head{margin-bottom:64px;grid-template-columns:1fr 1fr;gap:48px;align-items:end}}
+.section-head .lede{max-width:42ch}
+
+.idx{
+  display:inline-flex;align-items:baseline;gap:10px;margin-bottom:14px;
+  font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft);
+}
+.idx b{color:var(--lime);font-weight:500}
+
+/* ─────── steps ─────── */
+.steps{display:grid;gap:1px;background:var(--stroke);border:1px solid var(--stroke);border-radius:var(--r-big);overflow:hidden}
+@media(min-width:720px){.steps{grid-template-columns:1fr 1fr}}
+@media(min-width:1024px){.steps{grid-template-columns:repeat(4,1fr)}}
+.step{
+  padding:24px 20px 28px;background:var(--bg);
+  display:flex;flex-direction:column;gap:12px;min-height:180px;position:relative;
+}
+@media(min-width:720px){.step{padding:28px 24px 32px;gap:14px;min-height:200px}}
+.step:hover{background:var(--surface-lo)}
+.step-num{
+  font-family:var(--mono);font-size:11.5px;color:var(--lime);
+  letter-spacing:.14em;text-transform:uppercase;
+}
+.step-title{font-size:19px;font-weight:600;letter-spacing:-.015em;line-height:1.25}
+.step-desc{color:var(--ink-muted);font-size:14.5px;line-height:1.5}
+.step-icon{
+  width:32px;height:32px;border:1px solid var(--stroke-bold);border-radius:9px;
+  display:grid;place-items:center;color:var(--ink);margin-bottom:auto;
+}
+
+/* ─────── match panel ─────── */
+.match{
+  display:grid;gap:20px;
+  border:1px solid var(--stroke);border-radius:var(--r-big);
+  background:linear-gradient(180deg,var(--surface) 0%,var(--surface-lo) 100%);
+  padding:20px;
   position:relative;overflow:hidden;
 }
-.quiz-card::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:2px;
-  background:linear-gradient(90deg,var(--lime),var(--coral));
+@media(min-width:480px){.match{padding:24px;gap:24px}}
+@media(min-width:880px){.match{grid-template-columns:1fr 1.1fr;padding:40px;gap:48px;align-items:center}}
+.traits{display:flex;flex-wrap:wrap;gap:8px}
+.trait{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:9px 13px;border:1px solid var(--stroke-bold);border-radius:999px;
+  font-size:13px;color:var(--ink);background:rgba(255,255,255,.02);
 }
-.quiz-step{font-size:0.75rem;color:var(--ink-soft);font-weight:500;margin-bottom:0.5rem}
-.quiz-question{font-size:1rem;font-weight:600;margin-bottom:1.25rem}
-.quiz-chips{display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:1.25rem}
-.quiz-chip{
-  padding:0.5rem 0.875rem;border-radius:var(--radius-chip);
-  font-size:0.8125rem;font-weight:500;
-  border:1px solid var(--stroke);background:var(--surface-hi);
-  transition:all 0.2s;
-}
-.quiz-chip.selected{
-  border-color:var(--lime);background:var(--lime-soft);color:var(--lime);
-}
-.quiz-chip.pulse{
-  border-color:var(--lime-deep);background:var(--lime-soft);
-  animation:chipPulse 2s ease-in-out infinite;
-}
-@keyframes chipPulse{0%,100%{border-color:var(--lime-deep)}50%{border-color:var(--lime)}}
-.quiz-bar{
-  display:flex;align-items:center;gap:0.75rem;
-  padding-top:1rem;border-top:1px solid var(--stroke);
-}
-.quiz-bar-track{
-  flex:1;height:4px;border-radius:2px;background:var(--surface-hi);overflow:hidden;
-}
-.quiz-bar-fill{
-  height:100%;width:18%;border-radius:2px;
-  background:linear-gradient(90deg,var(--lime),#D4FF66);
-}
-.quiz-bar-label{font-size:0.75rem;color:var(--ink-soft);font-weight:500;white-space:nowrap}
+.trait .t-label{font-family:var(--mono);font-size:10.5px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.1em}
+.trait b{font-weight:600}
+.trait.lime{border-color:var(--stroke-lime);background:var(--lime-soft)}
+.trait.lime b{color:var(--lime)}
 
-/* ── How It Works ── */
-.how-list{display:flex;flex-direction:column;gap:1rem;margin-top:2rem}
-@media(min-width:640px){.how-list{display:grid;grid-template-columns:1fr 1fr;gap:1rem}}
-.how-step{
-  display:flex;align-items:flex-start;gap:1rem;
-  background:var(--surface);border:1px solid var(--stroke);
-  border-radius:var(--radius-card);padding:1.25rem;
+.match-arrow{
+  display:none;align-items:center;justify-content:center;color:var(--ink-soft);font-family:var(--mono);font-size:11px;
 }
-.how-num{
-  flex-shrink:0;display:flex;align-items:center;justify-content:center;
-  width:2.25rem;height:2.25rem;border-radius:50%;
-  background:var(--lime-soft);color:var(--lime);
-  font-size:0.8125rem;font-weight:700;
-}
-.how-text h4{font-size:0.9375rem;font-weight:600;margin-bottom:0.25rem}
-.how-text p{font-size:0.8125rem;color:var(--ink-muted);line-height:1.5}
-
-/* ── Buckets Grid ── */
-.buckets-grid{
-  display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-top:2rem
-}
-@media(min-width:480px){.buckets-grid{grid-template-columns:1fr 1fr 1fr}}
-@media(min-width:768px){.buckets-grid{grid-template-columns:repeat(4,1fr)}}
-.bucket-card{
-  background:var(--surface);border:1px solid var(--stroke);
-  border-radius:var(--radius-card);padding:1rem 0.875rem;
-  transition:border-color 0.2s;
-}
-.bucket-card:active{border-color:var(--lime)}
-.bucket-icon{
-  width:2rem;height:2rem;border-radius:8px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:1rem;margin-bottom:0.75rem;
-}
-.bucket-card h4{font-size:0.8125rem;font-weight:600;margin-bottom:0.25rem}
-.bucket-card p{font-size:0.75rem;color:var(--ink-soft);line-height:1.4}
-
-/* ── Features ── */
-.features-grid{display:flex;flex-direction:column;gap:0.75rem;margin-top:2rem}
-@media(min-width:640px){.features-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}}
-@media(min-width:1024px){.features-grid{grid-template-columns:1fr 1fr 1fr}}
-.feature-card{
-  background:var(--surface);border:1px solid var(--stroke);
-  border-radius:var(--radius-card);padding:1.25rem;
-}
-.feature-icon{
-  width:2.25rem;height:2.25rem;border-radius:10px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:1rem;margin-bottom:0.875rem;
-  background:var(--lime-soft);
-}
-.feature-card h4{font-size:0.9375rem;font-weight:600;margin-bottom:0.375rem}
-.feature-card p{font-size:0.8125rem;color:var(--ink-muted);line-height:1.55}
-
-/* ── Playbook Preview ── */
-.playbook-card{
-  margin-top:2rem;background:var(--surface);
-  border:1px solid var(--stroke);
-  border-radius:var(--radius-big);overflow:hidden;
-}
-.playbook-header{
-  padding:1rem 1.25rem;border-bottom:1px solid var(--stroke);
-  display:flex;align-items:center;justify-content:space-between;
-}
-.playbook-week{font-size:0.75rem;color:var(--ink-soft);font-weight:500}
-.playbook-streak{
-  display:inline-flex;align-items:center;gap:0.25rem;
-  padding:0.25rem 0.625rem;border-radius:var(--radius-pill);
-  background:var(--coral-soft);color:var(--coral);
-  font-size:0.6875rem;font-weight:600;
-}
-.playbook-body{padding:1.25rem}
-.playbook-day{font-size:0.875rem;font-weight:600;margin-bottom:0.75rem;color:var(--ink-muted)}
-.playbook-day strong{color:var(--ink)}
-.playbook-tasks{display:flex;flex-direction:column;gap:0.5rem}
-.playbook-task{
-  display:flex;align-items:flex-start;gap:0.625rem;
-  font-size:0.8125rem;color:var(--ink-muted);line-height:1.5;
-}
-.playbook-task input[type="checkbox"]{
-  -webkit-appearance:none;appearance:none;
-  width:1.125rem;height:1.125rem;border-radius:4px;
-  border:1.5px solid var(--ink-dim);flex-shrink:0;margin-top:0.125rem;
-  transition:all 0.2s;position:relative;
-}
-.playbook-task input[type="checkbox"]:checked{
-  border-color:var(--lime);background:var(--lime);
-}
-.playbook-task input[type="checkbox"]:checked::after{
-  content:'✓';position:absolute;top:50%;left:50%;
-  transform:translate(-50%,-50%);font-size:0.6875rem;
-  color:var(--lime-text);font-weight:700;
-}
-.playbook-task .done{text-decoration:line-through;color:var(--ink-dim)}
-.playbook-footer{
-  padding:0.875rem 1.25rem;border-top:1px solid var(--stroke);
-  display:flex;justify-content:space-between;align-items:center;
-}
-.playbook-footer span{font-size:0.75rem;color:var(--ink-soft)}
-.playbook-footer .btn-sm{
-  padding:0.375rem 0.875rem;border-radius:var(--radius-pill);
-  background:var(--lime);color:var(--lime-text);
-  font-size:0.75rem;font-weight:600;
-}
-
-/* ── Stats Row ── */
-.stats-row{
-  display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-top:2rem
-}
-@media(min-width:640px){.stats-row{grid-template-columns:repeat(4,1fr)}}
-.stat-item{
-  text-align:center;padding:1.5rem 0.75rem;
-  background:var(--surface);border:1px solid var(--stroke);
-  border-radius:var(--radius-card);
-}
-.stat-num{font-size:clamp(1.5rem,5vw,2.25rem);font-weight:700;color:var(--lime);line-height:1}
-.stat-label{font-size:0.75rem;color:var(--ink-soft);margin-top:0.375rem}
-
-/* ── Testimonial ── */
-.testimonial{
-  background:var(--surface);border:1px solid var(--stroke);
-  border-radius:var(--radius-big);padding:1.5rem;margin-top:2rem;
+.match-card{
+  border:1px solid var(--stroke-bold);border-radius:var(--r-big);
+  background:var(--bg-deep);padding:20px;
   position:relative;
 }
-.testimonial::before{content:'"';position:absolute;top:0.75rem;left:1.25rem;font-size:3rem;line-height:1;color:var(--lime);opacity:0.3;font-weight:700}
-.testimonial blockquote{font-size:0.9375rem;color:var(--ink-muted);line-height:1.65;margin-bottom:1rem}
-.testimonial-author{display:flex;align-items:center;gap:0.75rem}
-.testimonial-avatar{
-  width:2.5rem;height:2.5rem;border-radius:50%;
-  background:linear-gradient(135deg,var(--lime-soft),var(--coral-soft));
-  display:flex;align-items:center;justify-content:center;
-  font-weight:700;font-size:0.875rem;color:var(--lime);
+@media(min-width:480px){.match-card{padding:22px}}
+.match-card .top{display:flex;justify-content:space-between;align-items:start;gap:14px;margin-bottom:16px}
+.match-card .fit{
+  display:inline-flex;flex-direction:column;align-items:flex-end;flex-shrink:0;
 }
-.testimonial-author div{font-size:0.8125rem}
-.testimonial-author div span{display:block;font-size:0.75rem;color:var(--ink-soft);margin-top:0.125rem}
+.match-card .fit-num{
+  font-family:var(--mono);font-size:32px;font-weight:600;color:var(--lime);line-height:1;letter-spacing:-.02em;
+}
+@media(min-width:480px){.match-card .fit-num{font-size:36px}}
+.match-card .fit-label{font-family:var(--mono);font-size:10px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.12em;margin-top:4px}
+@media(min-width:480px){.match-card .fit-label{font-size:10.5px;letter-spacing:.14em}}
+.match-card h4{font-size:19px;font-weight:700;letter-spacing:-.02em;line-height:1.2;max-width:18ch}
+@media(min-width:480px){.match-card h4{font-size:22px;line-height:1.15}}
+.match-card .tag{font-family:var(--mono);font-size:11px;color:var(--ink-muted);text-transform:uppercase;letter-spacing:.12em;margin-bottom:8px}
+.match-card .row{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--stroke);margin:18px -20px 0;padding:0;border-top:1px solid var(--stroke);border-bottom:1px solid var(--stroke)}
+@media(min-width:480px){.match-card .row{margin:18px -22px 0}}
+.match-card .row > div{padding:12px 14px;background:var(--bg-deep)}
+@media(min-width:480px){.match-card .row > div{padding:14px 22px}}
+.match-card .row .k{font-family:var(--mono);font-size:9.5px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px}
+@media(min-width:480px){.match-card .row .k{font-size:10.5px;letter-spacing:.12em}}
+.match-card .row .v{font-size:13.5px;font-weight:600;color:var(--ink)}
+@media(min-width:480px){.match-card .row .v{font-size:15px}}
+.match-card .why{padding-top:16px;display:flex;flex-direction:column;gap:8px;color:var(--ink-muted);font-size:13px;line-height:1.5}
+@media(min-width:480px){.match-card .why{padding-top:18px;font-size:13.5px}}
+.match-card .why span{display:flex;gap:10px}
+.match-card .why span::before{content:"+";color:var(--lime);font-family:var(--mono);font-weight:600;flex-shrink:0}
 
-/* ── CTA ── */
-.cta-box{
-  background:linear-gradient(135deg,var(--surface),var(--surface-hi));
-  border:1px solid var(--stroke);border-radius:var(--radius-big);
-  padding:2.5rem 1.5rem;text-align:center;margin-top:2rem;
-  position:relative;overflow:hidden;
+/* ─────── playbook cards ─────── */
+.days{display:grid;gap:14px;grid-template-columns:1fr}
+@media(min-width:720px){.days{grid-template-columns:repeat(3,1fr);gap:18px}}
+.day{
+  background:var(--surface);border:1px solid var(--stroke);border-radius:var(--r-card);
+  padding:20px;display:flex;flex-direction:column;gap:14px;
+  transition:transform .2s ease,border-color .2s ease;
 }
-.cta-box::before{
-  content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;
-  background:radial-gradient(circle at 50% 50%,var(--lime-soft) 0%,transparent 50%);
-  pointer-events:none;opacity:0.5;
+@media(min-width:480px){.day{padding:22px}}
+.day:hover{transform:translateY(-3px);border-color:var(--stroke-bold)}
+.day-head{display:flex;justify-content:space-between;align-items:center}
+.day-tag{font-family:var(--mono);font-size:10.5px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.14em}
+.day-title{font-size:17px;font-weight:600;letter-spacing:-.015em;line-height:1.2}
+.day-list{display:flex;flex-direction:column;gap:10px;margin-top:4px}
+.day-task{display:flex;gap:11px;align-items:flex-start;font-size:13.5px;line-height:1.45;color:var(--ink-muted)}
+.day-check{
+  flex-shrink:0;width:16px;height:16px;border-radius:5px;border:1px solid var(--stroke-bold);
+  margin-top:1px;display:grid;place-items:center;
 }
-.cta-box h2{margin-bottom:0.75rem;position:relative;z-index:1}
-.cta-box p{font-size:0.9375rem;color:var(--ink-muted);margin-bottom:1.5rem;position:relative;z-index:1}
-.cta-box .btn-primary{position:relative;z-index:1}
+.day-task.done .day-check{background:var(--lime);border-color:var(--lime)}
+.day-task.done .day-check::after{content:"";width:8px;height:4px;border:1.5px solid #000;border-top:0;border-right:0;transform:rotate(-45deg) translate(1px,-1px)}
+.day-task.done{color:var(--ink-soft);text-decoration:line-through;text-decoration-color:var(--ink-dim)}
+.day-meta{
+  margin-top:auto;padding-top:14px;border-top:1px solid var(--stroke);
+  display:flex;justify-content:space-between;
+  font-family:var(--mono);font-size:11px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.1em;
+}
+.day-meta .est{color:var(--lime)}
 
-/* ── Footer ── */
-.footer{
-  border-top:1px solid var(--stroke);padding:2rem 0;
-  text-align:center;
+/* ─────── coach quote ─────── */
+.coach{
+  display:grid;gap:28px;align-items:center;
 }
-.footer p{font-size:0.75rem;color:var(--ink-soft)}
+@media(min-width:880px){.coach{grid-template-columns:1.1fr 1fr;gap:64px}}
+.chat-stack{display:flex;flex-direction:column;gap:10px;max-width:440px;width:100%}
+.bubble{
+  padding:13px 15px;border-radius:18px;font-size:14px;line-height:1.5;max-width:88%;
+  border:1px solid var(--stroke);
+}
+@media(min-width:480px){.bubble{padding:14px 16px;font-size:14.5px;max-width:85%}}
+.bubble.user{background:var(--surface);align-self:flex-end;border-bottom-right-radius:6px}
+.bubble.ai{background:var(--bg);border-color:var(--stroke-lime);align-self:flex-start;border-bottom-left-radius:6px;position:relative;padding-left:42px}
+.bubble.ai::before{
+  content:"H";position:absolute;left:10px;top:10px;
+  width:22px;height:22px;border-radius:6px;background:var(--lime);color:#000;
+  display:grid;place-items:center;font-family:var(--mono);font-size:11px;font-weight:700;
+}
+.bubble.user .label,.bubble.ai .label{
+  display:block;font-family:var(--mono);font-size:10px;color:var(--ink-soft);
+  text-transform:uppercase;letter-spacing:.14em;margin-bottom:4px;
+}
+.typing{display:inline-flex;gap:3px;margin-left:4px}
+.typing i{width:5px;height:5px;border-radius:50%;background:var(--ink-soft);animation:blink 1.4s infinite}
+.typing i:nth-child(2){animation-delay:.2s}
+.typing i:nth-child(3){animation-delay:.4s}
+@keyframes blink{0%,80%,100%{opacity:.3}40%{opacity:1}}
 
-/* ── Section Label ── */
-.label{
-  display:inline-flex;align-items:center;gap:0.375rem;
-  font-size:0.75rem;font-weight:600;text-transform:uppercase;
-  letter-spacing:0.08em;color:var(--lime);margin-bottom:0.75rem;
+/* ─────── stats ─────── */
+.stats{
+  display:grid;gap:1px;background:var(--stroke);
+  border-top:1px solid var(--stroke);border-bottom:1px solid var(--stroke);
+}
+@media(min-width:720px){.stats{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:719px){.stats{grid-template-columns:1fr 1fr}}
+.stat{padding:24px 18px;background:var(--bg)}
+@media(min-width:480px){.stat{padding:28px 22px}}
+@media(min-width:720px){.stat{padding:32px 24px}}
+.stat-n{font-family:var(--mono);font-weight:600;font-size:clamp(34px,5vw,52px);letter-spacing:-.025em;line-height:1;color:var(--ink)}
+.stat-n .u{color:var(--lime)}
+.stat-l{margin-top:10px;font-family:var(--mono);font-size:11px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.14em}
+
+/* ─────── faq ─────── */
+.faq{display:flex;flex-direction:column}
+.faq-item{border-top:1px solid var(--stroke)}
+.faq-item:last-child{border-bottom:1px solid var(--stroke)}
+.faq-q{
+  width:100%;display:flex;justify-content:space-between;align-items:center;gap:16px;
+  padding:20px 0;text-align:left;font-size:15.5px;font-weight:500;letter-spacing:-.01em;line-height:1.35;
+  transition:color .15s ease;min-height:56px;
+}
+@media(min-width:480px){.faq-q{font-size:17px;gap:20px;padding:22px 0;line-height:1.4}}
+.faq-q:hover{color:var(--lime)}
+.faq-q .plus{position:relative;width:14px;height:14px;flex-shrink:0;color:var(--ink-muted)}
+.faq-q .plus::before,.faq-q .plus::after{content:"";position:absolute;left:50%;top:50%;background:currentColor;transition:transform .25s ease}
+.faq-q .plus::before{width:14px;height:1.5px;transform:translate(-50%,-50%)}
+.faq-q .plus::after{width:1.5px;height:14px;transform:translate(-50%,-50%)}
+.faq-item.open .faq-q .plus::after{transform:translate(-50%,-50%) rotate(90deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .3s ease,padding .3s ease;color:var(--ink-muted);font-size:15px;line-height:1.6}
+.faq-item.open .faq-a{max-height:300px;padding:0 0 22px;max-width:64ch}
+
+/* ─────── final cta ─────── */
+.final{
+  position:relative;border:1px solid var(--stroke-bold);border-radius:var(--r-big);
+  padding:40px 22px;background:var(--surface-lo);
+  display:flex;flex-direction:column;align-items:center;text-align:center;gap:16px;
+  overflow:hidden;
+}
+@media(min-width:480px){.final{padding:48px 24px;gap:18px}}
+@media(min-width:720px){.final{padding:80px 40px}}
+.final .btn-primary{width:auto;min-width:240px}
+.final::before{
+  content:"";position:absolute;inset:auto -10% -60% -10%;height:80%;
+  background:radial-gradient(60% 80% at 50% 100%,rgba(200,255,62,.18),transparent 70%);
+  pointer-events:none;
+}
+.final h2{position:relative;max-width:18ch}
+.final .lede{position:relative;text-align:center;margin:0 auto}
+.final .btn-primary{position:relative;margin-top:8px}
+.final .small{position:relative;font-family:var(--mono);font-size:11px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.14em}
+
+/* ─────── footer ─────── */
+.foot{border-top:1px solid var(--stroke);padding:32px 0 48px;background:var(--bg-deep)}
+@media(min-width:720px){.foot{padding:40px 0 60px}}
+.foot-row{display:flex;flex-direction:column;gap:24px;justify-content:space-between;align-items:flex-start}
+@media(min-width:720px){.foot-row{flex-direction:row;align-items:center}}
+.foot-links{display:flex;flex-wrap:wrap;gap:18px;font-family:var(--mono);font-size:12px;color:var(--ink-muted);text-transform:uppercase;letter-spacing:.12em}
+.foot-links a:hover{color:var(--ink)}
+.foot-tag{font-family:var(--mono);font-size:11px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.14em}
+
+/* keyboard-style outline */
+.kbd{
+  font-family:var(--mono);font-size:11px;color:var(--ink-muted);
+  padding:2px 6px;border:1px solid var(--stroke-bold);border-radius:5px;background:var(--surface);
 }
 
-/* ── Misc ── */
-.section-header{text-align:center;max-width:36rem;margin:0 auto 0.5rem}
-.gap-section{padding:3rem 0}
-.fade-in{animation:fadeIn 0.6s ease-out both}
-@keyframes fadeIn{from{opacity:0;transform:translateY(0.75rem)}to{opacity:1;transform:translateY(0)}}
-
-@media(min-width:768px){
-  .hero{padding:7rem 0 4rem}
-  .hero-actions{margin-bottom:3rem}
-  .quiz-card{max-width:28rem;margin-top:0}
-  .hero-inner{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center}
-  .quiz-preview{display:flex;align-items:center;justify-content:flex-end}
-  .cta-box{padding:4rem 3rem}
+/* fadein */
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .8s ease,transform .8s ease}
+.reveal.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){
+  .reveal{opacity:1;transform:none;transition:none}
+  .ticker-track{animation:none}
+  .typing i{animation:none}
 }
-
-@media(min-width:1024px){
-  .hero{padding:8rem 0 5rem}
-  .hero-inner{grid-template-columns:1.1fr 0.9fr}
-}
-
-/* ── Waiting Room / Waitlist ── */
-.waitlist-form{
-  display:flex;flex-direction:column;gap:0.75rem;margin-top:0.5rem;
-  max-width:22rem;position:relative;z-index:1;
-}
-@media(min-width:480px){.waitlist-form{flex-direction:row;max-width:24rem}}
-.waitlist-input{
-  flex:1;padding:0.875rem 1.125rem;border-radius:var(--radius-pill);
-  border:1px solid var(--stroke);background:var(--surface);color:var(--ink);
-  font-size:0.9375rem;font-family:var(--font);
-  transition:border-color 0.2s;outline:none;
-}
-.waitlist-input::placeholder{color:var(--ink-soft)}
-.waitlist-input:focus{border-color:var(--lime)}
 </style>
 </head>
 <body>
 
-<!-- Header -->
-<header class="header">
-  <div class="header-inner">
-    <div class="logo">
-      <span class="logo-mark">H</span>
+<!-- header -->
+<header class="hdr">
+  <div class="wrap hdr-row">
+    <a href="#" class="brand">
+      <span class="brand-mark"></span>
       HustleAI
-    </div>
-    <a href="#" class="header-cta">Get Started</a>
+    </a>
+    <a href="#start" class="nav-cta">
+      Take the quiz
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 6h6m0 0L6 3m3 3L6 9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
   </div>
 </header>
 
-<!-- Hero -->
+<!-- hero -->
 <section class="hero">
-  <div class="hero-glow" aria-hidden="true"></div>
-  <div class="container hero-content">
-    <div class="hero-inner">
-      <div>
-        <div class="hero-badge">
-          <span>✦</span>
-          30 hand-curated hustles
-        </div>
-        <h1 class="h1">
-          Find your<br>
-          <span class="h1-highlight">side hustle</span><br>
-          in 3 minutes.
+  <div class="wrap">
+    <div class="hero-meta">
+      <span>HustleAI / Index</span>
+      <span>v2.4 · Mobile · iOS &amp; Android</span>
+    </div>
+
+    <div class="hero-stage">
+      <div class="hero-block reveal in">
+        <p class="eyebrow"><span class="dot"></span>Side hustle, designed for shipping</p>
+
+        <h1 class="display" style="margin-top:18px">
+          Stop reading <span class="ink-soft">about</span><br>
+          side hustles.<br>
+          <span class="underlime">Start one.</span>
         </h1>
-        <p class="body">
-          No generic advice. A 17-factor matching engine finds the exact side 
-          hustle built for your personality, goals, and risk tolerance.
+
+        <p class="lede hero-lede">
+          A 17-factor match finds the hustle that fits your life — then HustleAI builds you a day-by-day 90-day playbook and coaches you through it. No gurus. No fluff.
         </p>
-        <div class="hero-actions">
-          <a href="#" class="btn-primary">
-            Take the quiz →
+
+        <div class="hero-cta">
+          <a href="#start" class="btn-primary">
+            Take the match quiz
+            <span class="arrow">→</span>
           </a>
-          <a href="#" class="btn-secondary">
+          <a href="#how" class="btn-ghost">
             See how it works
           </a>
         </div>
+
+        <div class="cta-meta">
+          <span><b>02:30</b> &nbsp;Quiz length</span>
+          <span><b>30+</b>&nbsp;Verified playbooks</span>
+          <span><b>Free</b>&nbsp;to match</span>
+        </div>
       </div>
 
-      <!-- Quiz Preview -->
-      <div class="quiz-preview">
-        <div class="quiz-card">
-          <div class="quiz-step">Step 3 · Skills</div>
-          <div class="quiz-question">What are you good at?</div>
-          <div class="quiz-chips">
-            <span class="quiz-chip selected">Writing</span>
-            <span class="quiz-chip selected">Design</span>
-            <span class="quiz-chip selected">Coding</span>
-            <span class="quiz-chip">Research</span>
-            <span class="quiz-chip">Teaching</span>
-            <span class="quiz-chip pulse">Sales</span>
-            <span class="quiz-chip">Organizing</span>
-          </div>
-          <div class="quiz-bar">
-            <div class="quiz-bar-track">
-              <div class="quiz-bar-fill"></div>
+      <!-- phone -->
+      <div class="reveal in" style="transition-delay:.15s">
+        <div class="phone" aria-hidden="true">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+            <div class="phone-status">
+              <span>9:41</span>
+              <span class="dots"><i></i><i></i><i></i><i></i></span>
             </div>
-            <span class="quiz-bar-label">3 of 17</span>
+            <div class="q-progress">
+              <i class="done"></i><i class="done"></i><i class="done"></i><i class="done"></i>
+              <i class="done"></i><i class="done"></i><i class="done"></i>
+              <i class="now"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+            </div>
+            <div class="q-body">
+              <div class="q-count">Question 08 / 17</div>
+              <div class="q-title">How many hours a week can you realistically commit?</div>
+              <div class="q-opt">
+                <span class="radio"></span>
+                Under 3 — squeeze it in
+              </div>
+              <div class="q-opt">
+                <span class="radio"></span>
+                3 to 6 — most evenings
+              </div>
+              <div class="q-opt sel">
+                <span class="radio"></span>
+                7 to 12 — I'm serious
+              </div>
+              <div class="q-opt">
+                <span class="radio"></span>
+                Full-time, soon
+              </div>
+            </div>
+            <div class="q-foot">
+              <span class="q-skip">Back</span>
+              <span class="q-next">Next <svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 5h6m0 0L5 2m3 3L5 8" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></span>
+            </div>
+          </div>
+          <div class="phone-home"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- hustle ticker -->
+  <div class="ticker" aria-label="Verified playbooks">
+    <span class="ticker-label">Verified · 30+</span>
+    <span class="ticker-fade-l"></span>
+    <span class="ticker-fade-r"></span>
+    <div class="ticker-track">
+      <!-- track A -->
+      <span class="ticker-item"><span class="num">01</span> Cold Email Agency <span class="dash">/</span></span>
+      <span class="ticker-item"><span class="num">02</span> AI Voice Agent · Dental <span class="dash">/</span></span>
+      <span class="ticker-item"><span class="num">03</span> Mobile Detailing <span class="dash">/</span></span>
+      <span class="ticker-item"><span class="num">04</span> Newsletter · PMs <span class="dash">/</span></span>
+      <span class="ticker-item"><span class="num">05</span> Notion Templates · Therapists <span class="dash">/</span></span>
+      <span class="ticker-item"><span class="num">06</span> Amazon FBA · Niche <span class="dash">/</span></span>
+      <span class="ticker-item"><span class="num">07</span> Podcast Editing <span class="dash">/</span></span>
+      <span class="ticker-item"><span class="num">08</span> SEO Audits <span class="dash">/</span></span>
+      <span class="ticker-item"><span class="num">09</span> UGC Creator · DTC <span class="dash">/</span></span>
+      <span class="ticker-item"><span class="num">10</span> Web Dev Retainer <span class="dash">/</span></span>
+      <span class="ticker-item"><span class="num">11</span> Figma UI Kits <span class="dash">/</span></span>
+      <span class="ticker-item"><span class="num">12</span> Online Personal Training <span class="dash">/</span></span>
+      <span class="ticker-item"><span class="num">13</span> Substack Essays <span class="dash">/</span></span>
+      <span class="ticker-item"><span class="num">14</span> YouTube Thumbnails <span class="dash">/</span></span>
+      <span class="ticker-item"><span class="num">15</span> Vending Machines <span class="dash">/</span></span>
+      <span class="ticker-item"><span class="num">16</span> ESL Tutoring <span class="dash">/</span></span>
+      <span class="ticker-item"><span class="num">17</span> Pressure Washing <span class="dash">/</span></span>
+      <span class="ticker-item"><span class="num">18</span> Short-form Clips <span class="dash">/</span></span>
+      <span class="ticker-item"><span class="num">19</span> Micro-SaaS · Realtors <span class="dash">/</span></span>
+      <span class="ticker-item"><span class="num">20</span> eBay Vintage Flips <span class="dash">/</span></span>
+      <span class="ticker-item"><span class="num">21</span> AI Workflow Builder <span class="dash">/</span></span>
+      <span class="ticker-item"><span class="num">22</span> Niche Mini-Course <span class="dash">/</span></span>
+      <span class="ticker-item"><span class="num">23</span> Prompt Packs <span class="dash">/</span></span>
+      <span class="ticker-item"><span class="num">24</span> Mobile Dog Wash <span class="dash">/</span></span>
+      <span class="ticker-item"><span class="num">25</span> Niche Scheduler <span class="dash">/</span></span>
+      <span class="ticker-item"><span class="num">26</span> Niche Podcast <span class="dash">/</span></span>
+      <span class="ticker-item"><span class="num">27</span> Whatnot · Toys <span class="dash">/</span></span>
+      <span class="ticker-item"><span class="num">28</span> Newsletter · Solo Lawyers <span class="dash">/</span></span>
+      <span class="ticker-item"><span class="num">29</span> Online Music Lessons <span class="dash">/</span></span>
+      <span class="ticker-item"><span class="num">30</span> Career Coaching <span class="dash">/</span></span>
+      <!-- track B (duplicate for seamless loop) -->
+      <span class="ticker-item"><span class="num">01</span> Cold Email Agency <span class="dash">/</span></span>
+      <span class="ticker-item"><span class="num">02</span> AI Voice Agent · Dental <span class="dash">/</span></span>
+      <span class="ticker-item"><span class="num">03</span> Mobile Detailing <span class="dash">/</span></span>
+      <span class="ticker-item"><span class="num">04</span> Newsletter · PMs <span class="dash">/</span></span>
+      <span class="ticker-item"><span class="num">05</span> Notion Templates · Therapists <span class="dash">/</span></span>
+      <span class="ticker-item"><span class="num">06</span> Amazon FBA · Niche <span class="dash">/</span></span>
+      <span class="ticker-item"><span class="num">07</span> Podcast Editing <span class="dash">/</span></span>
+      <span class="ticker-item"><span class="num">08</span> SEO Audits <span class="dash">/</span></span>
+      <span class="ticker-item"><span class="num">09</span> UGC Creator · DTC <span class="dash">/</span></span>
+      <span class="ticker-item"><span class="num">10</span> Web Dev Retainer <span class="dash">/</span></span>
+      <span class="ticker-item"><span class="num">11</span> Figma UI Kits <span class="dash">/</span></span>
+      <span class="ticker-item"><span class="num">12</span> Online Personal Training <span class="dash">/</span></span>
+      <span class="ticker-item"><span class="num">13</span> Substack Essays <span class="dash">/</span></span>
+      <span class="ticker-item"><span class="num">14</span> YouTube Thumbnails <span class="dash">/</span></span>
+      <span class="ticker-item"><span class="num">15</span> Vending Machines <span class="dash">/</span></span>
+      <span class="ticker-item"><span class="num">16</span> ESL Tutoring <span class="dash">/</span></span>
+      <span class="ticker-item"><span class="num">17</span> Pressure Washing <span class="dash">/</span></span>
+      <span class="ticker-item"><span class="num">18</span> Short-form Clips <span class="dash">/</span></span>
+      <span class="ticker-item"><span class="num">19</span> Micro-SaaS · Realtors <span class="dash">/</span></span>
+      <span class="ticker-item"><span class="num">20</span> eBay Vintage Flips <span class="dash">/</span></span>
+      <span class="ticker-item"><span class="num">21</span> AI Workflow Builder <span class="dash">/</span></span>
+      <span class="ticker-item"><span class="num">22</span> Niche Mini-Course <span class="dash">/</span></span>
+      <span class="ticker-item"><span class="num">23</span> Prompt Packs <span class="dash">/</span></span>
+      <span class="ticker-item"><span class="num">24</span> Mobile Dog Wash <span class="dash">/</span></span>
+      <span class="ticker-item"><span class="num">25</span> Niche Scheduler <span class="dash">/</span></span>
+      <span class="ticker-item"><span class="num">26</span> Niche Podcast <span class="dash">/</span></span>
+      <span class="ticker-item"><span class="num">27</span> Whatnot · Toys <span class="dash">/</span></span>
+      <span class="ticker-item"><span class="num">28</span> Newsletter · Solo Lawyers <span class="dash">/</span></span>
+      <span class="ticker-item"><span class="num">29</span> Online Music Lessons <span class="dash">/</span></span>
+      <span class="ticker-item"><span class="num">30</span> Career Coaching <span class="dash">/</span></span>
+    </div>
+  </div>
+</section>
+
+<!-- how it works -->
+<section class="section" id="how">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div>
+        <p class="idx"><b>01</b> · How it works</p>
+        <h2 class="display">From scrolling to shipping in four steps.</h2>
+      </div>
+      <p class="lede">
+        Most "side hustle" content sells the dream and skips the work. HustleAI does the opposite — it gives you the exact next thing to do, every day.
+      </p>
+    </div>
+
+    <div class="steps reveal">
+      <div class="step">
+        <div class="step-icon">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="5.5" stroke="currentColor" stroke-width="1.4"/><path d="M8 5v3l2 1.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        </div>
+        <div class="step-num">01 / Match</div>
+        <div class="step-title">17 questions, ~2 min</div>
+        <div class="step-desc">Time, capital, skills, risk tolerance, target income — all weighted. No vibes-based recommendations.</div>
+      </div>
+      <div class="step">
+        <div class="step-icon">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 4h10M3 8h10M3 12h6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        </div>
+        <div class="step-num">02 / Plan</div>
+        <div class="step-title">90-day playbook</div>
+        <div class="step-desc">A day-by-day plan written by operators who've done it. Real tools, real templates, real numbers.</div>
+      </div>
+      <div class="step">
+        <div class="step-icon">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 12s2-5 5-5 5 5 5 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><circle cx="8" cy="4" r="1.4" fill="currentColor"/></svg>
+        </div>
+        <div class="step-num">03 / Coach</div>
+        <div class="step-title">AI in your pocket</div>
+        <div class="step-desc">Stuck on a cold email? Pricing wrong? The coach knows your playbook and answers in context.</div>
+      </div>
+      <div class="step">
+        <div class="step-icon">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 13l3-3 2 2 5-5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 5h3v3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="step-num">04 / Ship</div>
+        <div class="step-title">Streak &amp; revenue</div>
+        <div class="step-desc">Log income, hours, and milestones. Daily streaks turn discipline into reflex — no willpower required.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- the match -->
+<section class="section" style="padding-top:0">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div>
+        <p class="idx"><b>02</b> · The match</p>
+        <h2 class="display">Your answers turn into one specific hustle.</h2>
+      </div>
+      <p class="lede">
+        Most "what side hustle should I start" tools spit out a list of fifty things. We pick one — the one that actually fits the constraints you just told us about.
+      </p>
+    </div>
+
+    <div class="match reveal">
+      <div>
+        <p class="eyebrow" style="margin-bottom:18px"><span class="dot"></span>Inputs · 17 weighted signals</p>
+        <div class="traits">
+          <span class="trait"><span class="t-label">Time</span><b>10 hrs / wk</b></span>
+          <span class="trait"><span class="t-label">Capital</span><b>&lt; $500</b></span>
+          <span class="trait"><span class="t-label">Skill</span><b>Writing</b></span>
+          <span class="trait"><span class="t-label">Risk</span><b>Low</b></span>
+          <span class="trait"><span class="t-label">Style</span><b>Async</b></span>
+          <span class="trait lime"><span class="t-label">Goal</span><b>$3k / mo</b></span>
+          <span class="trait"><span class="t-label">Audience</span><b>B2B</b></span>
+          <span class="trait"><span class="t-label">Energy</span><b>Solo · deep work</b></span>
+          <span class="trait"><span class="t-label">Horizon</span><b>6 months</b></span>
+        </div>
+        <p class="lede" style="margin-top:24px;font-size:14.5px">
+          <span class="kbd">+ 8 more</span>&nbsp; signals weighted across niche, channels, networking aversion, and price-point comfort.
+        </p>
+      </div>
+
+      <div class="match-card">
+        <div class="top">
+          <div>
+            <div class="tag">Top match</div>
+            <h4>Cold Email Agency for Solo Lawyers</h4>
+          </div>
+          <div class="fit">
+            <div class="fit-num">94%</div>
+            <div class="fit-label">Fit score</div>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
-</section>
 
-<!-- Trusted / Social Proof -->
-<section class="section" style="padding:2rem 0;border-top:1px solid var(--stroke);border-bottom:1px solid var(--stroke)">
-  <div class="container">
-    <div class="stats-row">
-      <div class="stat-item">
-        <div class="stat-num">30+</div>
-        <div class="stat-label">Curated hustles</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-num">8</div>
-        <div class="stat-label">Hustle categories</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-num">17</div>
-        <div class="stat-label">Personality factors</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-num">90</div>
-        <div class="stat-label">Day playbooks</div>
-      </div>
-    </div>
-  </div>
-</section>
+        <div class="row">
+          <div><div class="k">Setup</div><div class="v">5 days</div></div>
+          <div><div class="k">First $</div><div class="v">~Day 21</div></div>
+          <div><div class="k">90d goal</div><div class="v">$3.2k MRR</div></div>
+        </div>
 
-<!-- How It Works -->
-<section class="section" id="how-it-works">
-  <div class="container">
-    <div class="section-header">
-      <div class="label"><span>──</span> How it works</div>
-      <h2 class="h2">Four steps to your first dollar</h2>
-      <p class="body" style="margin-top:0.75rem">No fluff. A system that actually gets you earning.</p>
-    </div>
-    <div class="how-list">
-      <div class="how-step">
-        <div class="how-num">1</div>
-        <div class="how-text">
-          <h4>Take the match quiz</h4>
-          <p>17 questions across skills, personality, income targets, and risk tolerance. Takes 3 minutes.</p>
-        </div>
-      </div>
-      <div class="how-step">
-        <div class="how-num">2</div>
-        <div class="how-text">
-          <h4>Get your matches</h4>
-          <p>Cosine similarity matching across 30+ hand-researched side hustles in 8 categories.</p>
-        </div>
-      </div>
-      <div class="how-step">
-        <div class="how-num">3</div>
-        <div class="how-text">
-          <h4>Follow the 90-day playbook</h4>
-          <p>Day-by-day plan with streaks, milestones, and AI coach check-ins. Built to finish.</p>
-        </div>
-      </div>
-      <div class="how-step">
-        <div class="how-num">4</div>
-        <div class="how-text">
-          <h4>Track your earnings</h4>
-          <p>Real dashboard showing hours, income, streaks, and progress across your hustles.</p>
+        <div class="why">
+          <span>Async &amp; solo — matches your work style</span>
+          <span>Low capital, writing-led — leverages your strength</span>
+          <span>B2B niche depth — defendable, not saturated</span>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Buckets -->
+<!-- playbook -->
+<section class="section" style="padding-top:0">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div>
+        <p class="idx"><b>03</b> · The playbook</p>
+        <h2 class="display">90 days. 90 small wins.</h2>
+      </div>
+      <p class="lede">
+        Every match comes with a day-by-day plan — broken into a handful of tasks you can actually finish before bed. Tick, log, repeat.
+      </p>
+    </div>
+
+    <div class="days reveal">
+      <article class="day">
+        <div class="day-head">
+          <span class="day-tag">Week 1</span>
+          <span class="day-tag" style="color:var(--lime)">Day 01</span>
+        </div>
+        <h3 class="day-title">Lock the niche</h3>
+        <div class="day-list">
+          <div class="day-task done"><span class="day-check"></span>Pick a target sub-niche</div>
+          <div class="day-task done"><span class="day-check"></span>Write a one-line value prop</div>
+          <div class="day-task"><span class="day-check"></span>Reserve the domain</div>
+          <div class="day-task"><span class="day-check"></span>List 50 prospects</div>
+        </div>
+        <div class="day-meta">
+          <span class="est">~45 min</span>
+          <span>2 / 4 done</span>
+        </div>
+      </article>
+
+      <article class="day">
+        <div class="day-head">
+          <span class="day-tag">Week 2</span>
+          <span class="day-tag" style="color:var(--lime)">Day 09</span>
+        </div>
+        <h3 class="day-title">Ship the first sequence</h3>
+        <div class="day-list">
+          <div class="day-task"><span class="day-check"></span>Draft 3-email sequence</div>
+          <div class="day-task"><span class="day-check"></span>Set up sending domain</div>
+          <div class="day-task"><span class="day-check"></span>Warm inbox · day 1</div>
+          <div class="day-task"><span class="day-check"></span>Schedule 25 sends</div>
+        </div>
+        <div class="day-meta">
+          <span class="est">~70 min</span>
+          <span>0 / 4 done</span>
+        </div>
+      </article>
+
+      <article class="day">
+        <div class="day-head">
+          <span class="day-tag">Week 4</span>
+          <span class="day-tag" style="color:var(--lime)">Day 23</span>
+        </div>
+        <h3 class="day-title">Close the first call</h3>
+        <div class="day-list">
+          <div class="day-task"><span class="day-check"></span>Discovery-call script</div>
+          <div class="day-task"><span class="day-check"></span>Pricing one-pager</div>
+          <div class="day-task"><span class="day-check"></span>Send 3 proposals</div>
+          <div class="day-task"><span class="day-check"></span>Log MRR baseline</div>
+        </div>
+        <div class="day-meta">
+          <span class="est">~90 min</span>
+          <span>0 / 4 done</span>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- coach -->
+<section class="section" style="padding-top:0">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div>
+        <p class="idx"><b>04</b> · The coach</p>
+        <h2 class="display">An operator who's read your playbook — at 11pm.</h2>
+      </div>
+      <p class="lede">
+        The AI coach has full context: your match, your plan, what you finished, what you skipped. It won't tell you to "stay consistent" — it'll tell you what to send tomorrow morning.
+      </p>
+    </div>
+
+    <div class="coach reveal">
+      <div class="chat-stack">
+        <div class="bubble user">
+          <span class="label">You · 23:14</span>
+          A prospect ghosted after I sent pricing. What now?
+        </div>
+        <div class="bubble ai">
+          <span class="label">HustleAI Coach</span>
+          Don't chase. Send a 2-line "still interested?" on day 4, then move on. Your sequence is built for volume — one ghost is signal, not a problem. Want me to draft the bump email using your tone?
+        </div>
+        <div class="bubble user">
+          <span class="label">You · 23:15</span>
+          Yes — keep it under 40 words.
+        </div>
+        <div class="bubble ai" style="border-color:var(--stroke)">
+          <span class="label">HustleAI Coach</span>
+          <span class="typing"><i></i><i></i><i></i></span>
+        </div>
+      </div>
+
+      <div>
+        <h3 class="section">Context-aware, never generic.</h3>
+        <p class="lede" style="margin-top:14px">
+          The coach pulls from your playbook, your logged tasks, and the operator notes baked into every hustle template. It quotes templates, drafts copy, and pushes back when you're avoiding the hard step.
+        </p>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;margin-top:22px;font-size:14.5px;color:var(--ink-muted)">
+          <li style="display:flex;gap:10px"><span style="color:var(--lime);font-family:var(--mono);font-weight:600">→</span> Knows what's next in your 90 days</li>
+          <li style="display:flex;gap:10px"><span style="color:var(--lime);font-family:var(--mono);font-weight:600">→</span> Drafts emails in your voice</li>
+          <li style="display:flex;gap:10px"><span style="color:var(--lime);font-family:var(--mono);font-weight:600">→</span> Calls out avoidance — politely</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- stats -->
+<section style="padding:0">
+  <div class="wrap">
+    <div class="stats reveal">
+      <div class="stat">
+        <div class="stat-n">17<span class="u">×</span></div>
+        <div class="stat-l">Match factors</div>
+      </div>
+      <div class="stat">
+        <div class="stat-n">30+</div>
+        <div class="stat-l">Verified playbooks</div>
+      </div>
+      <div class="stat">
+        <div class="stat-n">90<span class="u">d</span></div>
+        <div class="stat-l">Day-by-day plan</div>
+      </div>
+      <div class="stat">
+        <div class="stat-n">24/7</div>
+        <div class="stat-l">AI coach</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- faq -->
 <section class="section">
-  <div class="container">
-    <div class="section-header">
-      <div class="label"><span>──</span> Hustle categories</div>
-      <h2 class="h2">Something for every skillset</h2>
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div>
+        <p class="idx"><b>05</b> · Questions</p>
+        <h2 class="display">Reasonable doubts, answered.</h2>
+      </div>
+      <p class="lede">Built honest. If a question isn't here, the coach will answer it inside the app.</p>
     </div>
-    <div class="buckets-grid">
-      <div class="bucket-card">
-        <div class="bucket-icon" style="background:var(--lime-soft);color:var(--lime)">✎</div>
-        <h4>Content / Audience</h4>
-        <p>Audience-first plays</p>
+
+    <div class="faq reveal" id="faq">
+      <div class="faq-item">
+        <button class="faq-q">Is this another get-rich-quick app?<span class="plus"></span></button>
+        <div class="faq-a">No. Every playbook is built around a 90-day arc with realistic revenue ranges. Most hustles target $1–5k MRR by month three — and that requires actual work. We just remove the guesswork about <em>which</em> work.</div>
       </div>
-      <div class="bucket-card">
-        <div class="bucket-icon" style="background:var(--coral-soft);color:var(--coral)">▤</div>
-        <h4>Digital products</h4>
-        <p>Templates, kits, courses</p>
+      <div class="faq-item">
+        <button class="faq-q">How is this different from YouTube and free guides?<span class="plus"></span></button>
+        <div class="faq-a">YouTube tells you the idea. HustleAI tells you what to do today, in your context, with templates and a coach that holds you to it. Information is free; execution support is the unlock.</div>
       </div>
-      <div class="bucket-card">
-        <div class="bucket-icon" style="background:rgba(59,130,246,0.16);color:#3B82F6">⚡</div>
-        <h4>Done-for-you services</h4>
-        <p>Retainers, agency work</p>
+      <div class="faq-item">
+        <button class="faq-q">What does it cost?<span class="plus"></span></button>
+        <div class="faq-a">The match is free. The full playbook + coach is a single subscription with a 7-day trial — clear pricing inside the app, no upsell labyrinth.</div>
       </div>
-      <div class="bucket-card">
-        <div class="bucket-icon" style="background:rgba(168,85,247,0.16);color:#A855F7">⊞</div>
-        <h4>Micro-SaaS / AI tools</h4>
-        <p>Build something durable</p>
+      <div class="faq-item">
+        <button class="faq-q">What if I don't like my match?<span class="plus"></span></button>
+        <div class="faq-a">Retake the quiz any time, tweak the weights, or unlock another playbook from the library. The match is a recommendation, not a contract.</div>
       </div>
-      <div class="bucket-card">
-        <div class="bucket-icon" style="background:rgba(236,72,153,0.16);color:#EC4899">◎</div>
-        <h4>Creator economy</h4>
-        <p>UGC, clips, thumbnails</p>
-      </div>
-      <div class="bucket-card">
-        <div class="bucket-icon" style="background:rgba(251,146,60,0.16);color:#FB923C">◆</div>
-        <h4>Local / offline</h4>
-        <p>Wheels, water, wrenches</p>
-      </div>
-      <div class="bucket-card">
-        <div class="bucket-icon" style="background:rgba(34,211,238,0.16);color:#22D3EE">⇄</div>
-        <h4>Reselling / arbitrage</h4>
-        <p>Flip, list, ship</p>
-      </div>
-      <div class="bucket-card">
-        <div class="bucket-icon" style="background:var(--lime-soft);color:var(--lime)">◉</div>
-        <h4>Skills-as-a-service</h4>
-        <p>Tutoring, coaching, lessons</p>
+      <div class="faq-item">
+        <button class="faq-q">Do you do refunds?<span class="plus"></span></button>
+        <div class="faq-a">If the trial doesn't convince you, you don't pay. Cancel anytime from settings — no email-to-cancel theater.</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Features -->
-<section class="section">
-  <div class="container">
-    <div class="section-header">
-      <div class="label"><span>──</span> Built for real results</div>
-      <h2 class="h2">Everything you need to start earning</h2>
-    </div>
-    <div class="features-grid">
-      <div class="feature-card">
-        <div class="feature-icon" style="background:var(--lime-soft);color:var(--lime)">✦</div>
-        <h4>Smart matching</h4>
-        <p>17-dimensional cosine similarity. Your personality, risk tolerance, income targets, and schedule all factor into the match.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon" style="background:var(--coral-soft);color:var(--coral)">◆</div>
-        <h4>AI coach</h4>
-        <p>Real-time chat with an AI coach that knows your hustle, your progress, and what you should do next.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon" style="background:rgba(59,130,246,0.16);color:#3B82F6">≡</div>
-        <h4>Streak system</h4>
-        <p>Day-by-day consistency tracking. Streaks unlock milestones. You don't need motivation, you need momentum.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon" style="background:rgba(168,85,247,0.16);color:#A855F7">☰</div>
-        <h4>90-day playbooks</h4>
-        <p>Every hustle comes with a 90-day day-by-day plan. No ambiguity. Open the app, do the next thing.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon" style="background:rgba(251,146,60,0.16);color:#FB923C">⬡</div>
-        <h4>Earnings dashboard</h4>
-        <p>Real metrics: hours logged, income by hustle, streak status, milestones achieved. One screen.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon" style="background:rgba(34,211,238,0.16);color:#22D3EE">▣</div>
-        <h4>Mobile native</h4>
-        <p>React Native + Expo. Offline-capable. Works when you're on the train, in line, or wherever the idea hits.</p>
-      </div>
+<!-- final cta -->
+<section class="section" id="start" style="padding-top:0">
+  <div class="wrap">
+    <div class="final reveal">
+      <p class="eyebrow"><span class="dot"></span>02:30 to your match</p>
+      <h2 class="display">Find the hustle.<br>Then actually start it.</h2>
+      <p class="lede">Free match. No card. Just 17 questions and a real answer at the end.</p>
+      <a href="#" class="btn-primary">
+        Start the quiz
+        <span class="arrow">→</span>
+      </a>
+      <p class="small">iOS · Android · v2.4</p>
     </div>
   </div>
 </section>
 
-<!-- Playbook Preview -->
-<section class="section">
-  <div class="container">
-    <div class="section-header">
-      <div class="label"><span>──</span> See it in action</div>
-      <h2 class="h2">Your playbook doesn't wait</h2>
+<!-- footer -->
+<footer class="foot">
+  <div class="wrap foot-row">
+    <a href="#" class="brand">
+      <span class="brand-mark"></span>
+      HustleAI
+    </a>
+    <div class="foot-links">
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+      <a href="#">Contact</a>
+      <a href="#">Press</a>
     </div>
-    <div class="playbook-card">
-      <div class="playbook-header">
-        <span class="playbook-week">Week 3 · Landing your first client</span>
-        <span class="playbook-streak">🔥 6-DAY STREAK</span>
-      </div>
-      <div class="playbook-body">
-        <div class="playbook-day"><strong>Day 18</strong> · Monday</div>
-        <div class="playbook-tasks">
-          <label class="playbook-task">
-            <input type="checkbox" checked>
-            <span class="done">Draft cold email template for 5 target clients</span>
-          </label>
-          <label class="playbook-task">
-            <input type="checkbox">
-            <span>Refine offer based on yesterday's competitor research</span>
-          </label>
-          <label class="playbook-task">
-            <input type="checkbox">
-            <span>Send first 3 outreach emails</span>
-          </label>
-          <label class="playbook-task">
-            <input type="checkbox">
-            <span>Log 2 hours in the earnings dashboard</span>
-          </label>
-        </div>
-      </div>
-      <div class="playbook-footer">
-        <span>6 of 90 days complete</span>
-        <span class="btn-sm">Check in →</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Testimonial -->
-<section class="section">
-  <div class="container">
-    <div class="section-header">
-      <div class="label"><span>──</span> Real results</div>
-      <h2 class="h2">People are actually doing it</h2>
-    </div>
-    <div class="testimonial">
-      <blockquote>
-        I took the quiz thinking it'd be a fun distraction. Three months later I'm 
-        pulling $4,500/month from a cold email agency for local businesses. The 
-        playbook kept me honest when I wanted to quit at week 2.
-      </blockquote>
-      <div class="testimonial-author">
-        <div class="testimonial-avatar">D</div>
-        <div>
-          Derek J.
-          <span>Cold email agency · $4,500/mo</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- CTA -->
-<section class="section" style="padding-bottom:5rem">
-  <div class="container">
-    <div class="cta-box">
-      <div class="label" style="justify-content:center"><span>──</span> Get started</div>
-      <h2 class="h2">3 minutes to your match</h2>
-      <p>No signup walls. Take the quiz, see your hustles, start your playbook.</p>
-      <div style="display:flex;flex-direction:column;align-items:center">
-        <form class="waitlist-form" onsubmit="event.preventDefault();this.querySelector('button').textContent='You\'re in! ✦';this.querySelector('input').disabled=true">
-          <input class="waitlist-input" type="email" placeholder="Enter your email" required>
-          <button class="btn-primary" type="submit">Join waitlist →</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Footer -->
-<footer class="footer">
-  <div class="container">
-    <p>HustleAI. Built for people who'd rather build than browse.</p>
+    <span class="foot-tag">© 2026 · Built to ship</span>
   </div>
 </footer>
 
+<script>
+// FAQ
+document.querySelectorAll('.faq-item').forEach(item => {
+  item.querySelector('.faq-q').addEventListener('click', () => {
+    const open = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!open) item.classList.add('open');
+  });
+});
+
+// reveal-on-scroll
+const io = new IntersectionObserver(es => {
+  es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+}, { rootMargin: '0px 0px -10% 0px', threshold: 0.05 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
 </body>
 </html>
